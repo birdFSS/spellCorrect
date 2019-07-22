@@ -5,6 +5,8 @@
 
 using std::ifstream;
 using std::istringstream;
+using std::cout;
+using std::endl;
 
 namespace wd
 {
@@ -12,7 +14,36 @@ namespace wd
 DictProducer::DictProducer(const string& dir) :
     m_dir(dir),
     m_splitTool(nullptr)
-    {}
+{
+}
+
+DictProducer::DictProducer(const string& dir, const string &ignorePath) :
+    m_dir(dir),
+    m_splitTool(nullptr)
+{
+    setIgnoreWords(ignorePath);
+}
+
+void DictProducer::setIgnoreWords(const string & path)
+{
+    ifstream ifs(path);
+    string word;
+    while(ifs >> word)
+    {
+        m_ignore.insert(word);
+    }
+}
+
+void DictProducer::showDict() const
+{
+    auto it = m_dict.begin();
+    while(it != m_dict.end())
+    {
+        cout << it->first << " " << it->second << endl;
+        ++it;
+    }
+}
+
 
 void DictProducer::DealOtherChar(string& str)
 {
@@ -58,12 +89,19 @@ void DictProducer::storeDict(const char* filePath)
     while(it != m_dict.end())
     {
         ofs << it->first << " " << it->second << std::endl;
+        ++it;
     }
 }
 
+void DictProducer::getFile() const
+{
+    cout << ">> path : " << m_dir << endl;
+}
 
-
-
+void DictProducer::showFilePath() const
+{
+    cout << ">> path : " << m_dir << endl;
+}
 
 
 

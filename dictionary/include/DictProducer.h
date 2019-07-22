@@ -18,8 +18,10 @@ class DictProducer
 {
 public:
     DictProducer(const string& dir);        //英文
+    DictProducer(const string& dir, const string &ignorePath);    //英文
     DictProducer(const string& dir, SplitTool* splitTool); //中文
     
+    void setIgnoreWords(const string & path);
     void buildDict();
     void buildCnDict();
 
