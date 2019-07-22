@@ -1,4 +1,10 @@
 #include "../include/DictProducer.h"
+#include "../include/cppjieba/Jieba.hpp"
+#include <limits.h>
+#include <stdlib.h>
+#include <dirent.h>
+#include<sys/types.h>
+#include<unistd.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -15,6 +21,10 @@ DictProducer::DictProducer(const string& dir) :
     m_dir(dir),
     m_splitTool(nullptr)
 {
+    getDirAbosolutePath();
+    getFileAbosolutePath();
+    //cout << m_dir << endl;
+    //遍历目录，将文件的绝对路径都加进来
 }
 
 DictProducer::DictProducer(const string& dir, const string &ignorePath) :
@@ -26,9 +36,14 @@ DictProducer::DictProducer(const string& dir, const string &ignorePath) :
 
 void DictProducer::setIgnoreWords(const string & path)
 {
+    if(path.size() == 0)
+    {
+        cout << "ignore path is empty" << endl;
+        return ;
+    }
     ifstream ifs(path);
     string word;
-    while(ifs >> word)
+    while(getline(ifs,word))
     {
         m_ignore.insert(word);
     }
@@ -73,6 +88,12 @@ void DictProducer::buildDict()
         }
     }
 }
+#if 0
+void DictProducer::buildCnDict()
+{
+    cppjieba::Jieba jieba
+}
+#endif
 
 void DictProducer::pushDict(const string& word)
 {
@@ -93,17 +114,60 @@ void DictProducer::storeDict(const char* filePath)
     }
 }
 
-void DictProducer::getFile() const
+void DictProducer::getDirAbosolutePath()
 {
-    cout << ">> path : " << m_dir << endl;
+    char buf[1024] = {0};
+    if(realpath(m_dir.c_str(), buf))
+    {
+        m_dir = buf;
+    }else{
+        perror("realpath");
+    }
 }
 
+void DictProducer::getFileAbosolutePath()   //获取文件的绝对路径
+{
+    DIR* dir = opendir(m_dir.c_str());
+    if(nullptr == dir)
+    {
+        perror("opendir");
+        return ;
+    }
+    struct dirent *d;
+    string filePath;
+    while((d = readdir(dir)) != NULL)
+    {
+        if(d->d_type & DT_REG)
+        {
+            filePath = m_dir + "/" + d->d_name;
+            m_filePath.push_back(filePath);
+        }
+    }
+
+    int ret = closedir(dir);
+    if(-1 == ret)
+    {
+        perror("closedir");
+        return;
+    }
+}
 void DictProducer::showFilePath() const
 {
-    cout << ">> path : " << m_dir << endl;
+    cout << ">> dir path : " << m_dir << endl;
+    for(auto i : m_filePath)
+    {
+        cout << i << endl;
+    }
 }
 
-
+void DictProducer::showIgnoreWords() const
+{
+    cout << "ignore word " << endl;
+    for(auto i : m_ignore)
+    {
+        cout << i << endl;
+    }
+}
 
 
 

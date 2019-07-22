@@ -21,18 +21,20 @@ public:
     DictProducer(const string& dir, const string &ignorePath);    //英文
     DictProducer(const string& dir, SplitTool* splitTool); //中文
     
-    void setIgnoreWords(const string & path);
+    void setIgnoreWords(const string & path) ;
     void buildDict();
-    void buildCnDict();
+    void buildCNDict();
 
     void storeDict(const char* filePath);
 
     void showFilePath() const; //测试接口
     void showDict() const; //测试接口
-    void getFile() const;  //获取文件的绝对路径
+    void showIgnoreWords() const;
+    void getFileAbosolutePath() ;  //获取文件的绝对路径
     void pushDict(const string& word);  //存储某个单词
 
 private:
+    void getDirAbosolutePath();
     void DealOtherChar(string& str);    //处理标点和将大写字母变为小写
 private:
     string m_dir;       //语料库文件存放路径
