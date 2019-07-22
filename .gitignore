@@ -1,0 +1,9 @@
+
+*.o
+*.txt
+*.exe
+*.out
+*.i
+*.log
+*.tar.gz
+*.rar
