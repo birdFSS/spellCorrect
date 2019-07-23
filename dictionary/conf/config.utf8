@@ -1,7 +1,10 @@
-dir   ../source/english/
-cndir ../source/chinese/
+en_dir ../source/english/
+cn_dir ../source/chinese/
 en_ignore ../conf/en_ignore.utf8
 cn_ignore ../conf/cn_ignore.utf8
+en_dict ../data/en_dict.uft8
+cn_dict ../data/cn_dict.utf8
+key ../data/key.utf8
 ip    192.168.4.194
 port  8888
 threadNum 10

@@ -26,7 +26,7 @@ public:
     void buildCNDict();
 
     size_t nBytesCode(const char ch);       //判断是否是中文字符
-    void storeDict(const char* filePath);
+    void storeDict(const string& filePath);
 
     void showFilePath() const; //测试接口
     void showDict() const; //测试接口

@@ -24,9 +24,9 @@ DictProducer::DictProducer(const string& dir) :
     m_splitTool(nullptr)
 {
     getDirAbosolutePath();
+    //遍历目录，将文件的绝对路径都加进来
     getFileAbosolutePath();
     //cout << m_dir << endl;//测试
-    //遍历目录，将文件的绝对路径都加进来
 }
 
 DictProducer::DictProducer(const string& dir, std::shared_ptr<SplitTool> splitTool) :
@@ -54,7 +54,8 @@ void DictProducer::setIgnoreWords(const string & path)
     }
     ifstream ifs(path);
     string word;
-    while(getline(ifs,word))
+    //while(getline(ifs,word))
+    while(ifs >> word)
     {
         m_ignore.insert(word);
     }
@@ -86,16 +87,19 @@ void DictProducer::DealOtherChar(string& str)
 
 void DictProducer::buildDict()
 {
-    ifstream ifs(m_dir);
-    string line;
-    while(getline(ifs, line))
+    for(const auto& fileName : m_filePath)
     {
-        DealOtherChar(line);
-        istringstream stream(line);
-        string word;
-        while(stream >> word)
+        ifstream ifs(fileName);
+        string line;
+        while(getline(ifs, line))
         {
-            pushDict(word);
+            DealOtherChar(line);
+            istringstream stream(line);
+            string word;
+            while(stream >> word)
+            {
+                pushDict(word);
+            }
         }
     }
 }
@@ -104,7 +108,7 @@ void DictProducer::buildCNDict()
 {
     vector<string> words;
 
-    for(auto fileName : m_filePath)
+    for(const auto& fileName : m_filePath)
     {
         ifstream ifs(fileName);
         string line;
@@ -135,7 +139,7 @@ void DictProducer::pushDict(const string& word)
     }
 }
 
-void DictProducer::storeDict(const char* filePath)
+void DictProducer::storeDict(const string& filePath)
 {
     std::ofstream ofs(filePath);
     auto it = m_dict.begin();
