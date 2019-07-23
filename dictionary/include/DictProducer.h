@@ -16,6 +16,7 @@ class SplitTool;
 
 class DictProducer
 {
+    friend class IndexProducer;
 public:
     DictProducer(const string& dir, std::shared_ptr<SplitTool> splitTool); //中文
     DictProducer(const string& dir);        //英文
@@ -33,6 +34,7 @@ public:
     void showIgnoreWords() const;
     void getFileAbosolutePath() ;  //获取文件的绝对路径
     void pushDict(const string& word);  //存储某个单词
+    
 
 private:
     void DealOtherCharForCN(string & str);
