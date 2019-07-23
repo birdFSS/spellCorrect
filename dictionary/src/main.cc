@@ -55,14 +55,14 @@ void test3()
 {
     //测试中文分词，构建中文词典
     std::shared_ptr<wd::SplitTool> pst(new wd::CppJieba());
-    wd::Configuration conf("../conf/config.txt");
+    wd::Configuration conf("../conf/config.utf8");
     auto confMap = conf.getConfigMap();
 
     wd::DictProducer CNdict(confMap["cndir"], pst);
     CNdict.setIgnoreWords(confMap["cn_ignore"]);
     CNdict.buildCNDict();
     //CNdict.showIgnoreWords(); //展示忽略的字词
-    CNdict.storeDict("../data/dict_cn.txt");
+    CNdict.storeDict("../data/dict_cn.utf8");
 }
 
 int main()

@@ -1,0 +1,10 @@
+dir   ../source/english/
+cndir ../source/chinese/
+en_ignore ../conf/en_ignore.utf8
+cn_ignore ../conf/cn_ignore.utf8
+ip    192.168.4.194
+port  8888
+threadNum 10
+queSize   20
+
+
