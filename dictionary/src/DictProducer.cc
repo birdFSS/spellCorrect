@@ -113,7 +113,8 @@ void DictProducer::buildCNDict()
             words = m_splitTool->cut(line);
             for(auto& word : words)
             {
-                if(m_ignore.find(word) == m_ignore.end())
+                //如果是(三个字节编码的)(汉字是三个字节编码 UTF-8)，且不再忽略列表中的
+                if(nBytesCode(word[0]) == 3 && m_ignore.find(word) == m_ignore.end())
                 {
                     m_dict[word]++;
                 }
@@ -201,6 +202,24 @@ void DictProducer::showIgnoreWords() const
 }
 
 
+size_t DictProducer::nBytesCode(const char ch)
+{
+	if(ch & (1 << 7))
+	{
+		int nBytes = 1;
+		for(int idx = 0; idx != 6; ++idx)
+		{
+			if(ch & (1 << (6 - idx)))
+			{
+				++nBytes;	
+			}
+			else
+				break;
+		}
+		return nBytes;
+	}
+	return 1;
+}  
 
 
 

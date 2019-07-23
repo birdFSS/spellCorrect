@@ -59,7 +59,9 @@ void test3()
     auto confMap = conf.getConfigMap();
 
     wd::DictProducer CNdict(confMap["cndir"], pst);
+    CNdict.setIgnoreWords(confMap["cn_ignore"]);
     CNdict.buildCNDict();
+    //CNdict.showIgnoreWords(); //展示忽略的字词
     CNdict.storeDict("../data/dict_cn.txt");
 }
 
