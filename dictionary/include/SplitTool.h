@@ -8,7 +8,7 @@ namespace wd
 
 class SplitTool
 {
-protected:
+public:
     SplitTool() {}
     virtual ~SplitTool() {}
     virtual std::vector<std::string> cut(const std::string & sentence) = 0;

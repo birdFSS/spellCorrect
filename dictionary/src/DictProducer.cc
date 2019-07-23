@@ -1,5 +1,5 @@
 #include "../include/DictProducer.h"
-#include "../include/cppjieba/Jieba.hpp"
+#include "../include/CppJieba.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <dirent.h>
@@ -11,6 +11,8 @@
 
 using std::ifstream;
 using std::istringstream;
+using std::vector;
+using std::string;
 using std::cout;
 using std::endl;
 
@@ -23,9 +25,18 @@ DictProducer::DictProducer(const string& dir) :
 {
     getDirAbosolutePath();
     getFileAbosolutePath();
-    //cout << m_dir << endl;
+    //cout << m_dir << endl;//测试
     //遍历目录，将文件的绝对路径都加进来
 }
+
+DictProducer::DictProducer(const string& dir, std::shared_ptr<SplitTool> splitTool) :
+    m_dir(dir),
+    m_splitTool(splitTool)
+{
+    getDirAbosolutePath();
+    getFileAbosolutePath();
+}
+
 
 DictProducer::DictProducer(const string& dir, const string &ignorePath) :
     m_dir(dir),
@@ -88,10 +99,30 @@ void DictProducer::buildDict()
         }
     }
 }
-#if 0
-void DictProducer::buildCnDict()
+#if 1
+void DictProducer::buildCNDict()
 {
-    cppjieba::Jieba jieba
+    vector<string> words;
+
+    for(auto fileName : m_filePath)
+    {
+        ifstream ifs(fileName);
+        string line;
+        while(getline(ifs, line))
+        {
+            words = m_splitTool->cut(line);
+            for(auto& word : words)
+            {
+                if(m_ignore.find(word) == m_ignore.end())
+                {
+                    m_dict[word]++;
+                }
+            }
+        
+        }
+    }//for(auto fileName : m_filePath)
+    
+
 }
 #endif
 
@@ -168,7 +199,6 @@ void DictProducer::showIgnoreWords() const
         cout << i << endl;
     }
 }
-
 
 
 

@@ -1,9 +1,9 @@
 #pragma once
-
 #include <string>
 #include <map>
 #include <set>
 #include <vector>
+#include <memory>
 using std::string;
 using std::map;
 using std::set;
@@ -17,9 +17,9 @@ class SplitTool;
 class DictProducer
 {
 public:
+    DictProducer(const string& dir, std::shared_ptr<SplitTool> splitTool); //中文
     DictProducer(const string& dir);        //英文
     DictProducer(const string& dir, const string &ignorePath);    //英文
-    DictProducer(const string& dir, SplitTool* splitTool); //中文
     
     void setIgnoreWords(const string & path) ;
     void buildDict();
@@ -34,6 +34,7 @@ public:
     void pushDict(const string& word);  //存储某个单词
 
 private:
+    void DealOtherCharForCN(string & str);
     void getDirAbosolutePath();
     void DealOtherChar(string& str);    //处理标点和将大写字母变为小写
 private:
@@ -41,7 +42,7 @@ private:
     vector<string> m_filePath;  //语料库文件的绝对路劲集合
     map<string, int> m_dict;    //单词 词频
     set<string> m_ignore;       //忽略一些简单的单词
-    SplitTool * m_splitTool;
+    std::shared_ptr<SplitTool> m_splitTool;
 };
 
 

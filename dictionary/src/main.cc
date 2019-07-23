@@ -1,5 +1,6 @@
 #include "../include/Configuration.h"
 #include "../include/DictProducer.h"
+#include "../include/CppJieba.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -50,9 +51,21 @@ void test2()
     CNdict.showIgnoreWords();
 }
 
+void test3()
+{
+    //测试中文分词，构建中文词典
+    std::shared_ptr<wd::SplitTool> pst(new wd::CppJieba());
+    wd::Configuration conf("../conf/config.txt");
+    auto confMap = conf.getConfigMap();
+
+    wd::DictProducer CNdict(confMap["cndir"], pst);
+    CNdict.buildCNDict();
+    CNdict.storeDict("../data/dict_cn.txt");
+}
+
 int main()
 {
-    test2();
+    test3();
     //dict.buildDict();
     //dict.showDict();
     //dict.storeDict("../data/dict_test.txt");
