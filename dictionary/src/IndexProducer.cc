@@ -24,7 +24,9 @@ void IndexProducer::createIndex(const DictProducer& en_dict,const DictProducer& 
     while(iter1 != en_dict.m_dict.end())
     {
         //遍历每一个字母
-        for(auto it_char = iter1->first.begin();it_char != iter1->first.end(); ++it_char)
+        for(auto it_char = iter1->first.begin();
+            it_char != iter1->first.end();
+            ++it_char)
         {
             string str(1,0);
             str[0] = *it_char;
@@ -40,8 +42,12 @@ void IndexProducer::createIndex(const DictProducer& en_dict,const DictProducer& 
     // 遍历每一个词
     while(iter2 != cn_dict.m_dict.end())
     {
-        //遍历每一个字,每个字占3个字节
-        for(auto it_cn = iter2->first.begin(); it_cn != iter2->first.end(); it_cn += 3)
+        //遍历每一个字,每个字占3个字节,避免乱入字符
+        for(auto it_cn = iter2->first.begin();
+            it_cn != iter2->first.end() &&
+            it_cn + 1 != iter2->first.end() &&
+            it_cn + 2 != iter2->first.end(); 
+            it_cn += 3)
         {
             string str(it_cn,it_cn+3);
             m_index[str].insert(line_no);
