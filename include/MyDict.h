@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <set>
 #include <map>
 
 namespace wd
@@ -13,6 +14,7 @@ public:
         if(m_self == nullptr)
         {
             m_self = new MyDict();
+            atexit(destroy);
         }
         return m_self;
     }
@@ -24,14 +26,29 @@ public:
             m_self = nullptr;
         }
     }
+
+    std::vector<std::pair<std::string,int>>&  getDict()
+    {
+        return m_dict;
+    }
+
+    std::map<std::string,std::set<int>>& getIndexTable()
+    { return m_index_table; }
+
+    void init(const std::string& dictEnPath, const std::string& dictCnPath);
+    void init(const std::string& dictEnPath, const std::string& dictCnPath,const std::string& IndexTablePath);
+    void setIndexTable(const std::string& IndexTablePath);
 private:
     MyDict() {}
     ~MyDict() {}
 
+    void showTableInTestFile(const std::string& path = "../test/table_test.txt");
+    void showDictInTestFile(const std::string& path = "../test/map_test.txt");
+
 private:
     static MyDict * m_self;
     std::vector<std::pair<std::string,int>> m_dict;
-    std::map<std::string,int> m_index_table;
+    std::map<std::string,std::set<int>> m_index_table;
 };
 
 
