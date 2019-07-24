@@ -53,7 +53,7 @@ private:
     bool m_isLooping;
 
     MutexLock m_mutex;
-    std::vector<Functor> m_pendingFunctors;
+    std::vector<Functor> m_pendingFunctors;     //需要延迟执行的回调函数
     //整体处理的回调函数
     TcpConnectionCallBack m_onConnection;
     TcpConnectionCallBack m_onMessage;

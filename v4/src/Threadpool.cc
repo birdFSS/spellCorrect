@@ -1,6 +1,6 @@
-#include "Threadpool.h"
-#include "Thread.h"
-#include "unistd.h"
+#include "../include/Threadpool.h"
+#include "../include/Thread.h"
+#include <unistd.h>
 
 #include <memory>
 

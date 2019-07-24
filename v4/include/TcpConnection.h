@@ -29,13 +29,18 @@ public:
     string toString() const;                       
     void shutdown();
 
-    void setConnectionCallBack(const TcpConnectionCallBack & cb)
+#if 1
+    //这里先传递了EventLoop的成员 函数对象的引用过来，然后又调用std::move
+    //从语法上讲std::move后的对象不应该再使用了。也就是说不该使用Eventloop中的三个成员 函数对象
+    //但是每建立一个新连接都需要做一次set回调函数，那么这就有问题了
+    //所有tcp连接的对象可能跟EventLoop中的函数保持一致，即如果EventLoop改变，其他的也会变
+    void setConnectionCallBack(const TcpConnectionCallBack & cb)    //这个传递后，EventLoop那个就不能用了
     { m_onConnection = std::move(cb); }
     void setMessageCallBack(const TcpConnectionCallBack & cb)
     { m_onMessage= std::move(cb); }
     void setCloseCallBack(const TcpConnectionCallBack & cb)
     { m_onClose= std::move(cb); }
-
+#endif
     void handleConnectionCallBack();
     void handleMessageCallBack();
     void handleCloseCallBask();
