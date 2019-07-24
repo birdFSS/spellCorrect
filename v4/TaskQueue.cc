@@ -34,34 +34,39 @@ bool TaskQueue::full() const
     return m_que.size() == m_queSize;
 }
 
-void TaskQueue::push(valueType number)
+void TaskQueue::push(Task val)
 {
-    MutexLockGuard autolock(m_mutex);
-    while(m_isOpen && full())
     {
-        m_notFull.wait();
-    }
+        MutexLockGuard autolock(m_mutex);
+        while(m_isOpen && full())
+        {
+            m_notFull.wait();
+        }
 
-    m_que.push(number);
+        m_que.push(val);
+    }
     m_notEmpty.notify();
 }
 
-TaskQueue::valueType TaskQueue::pop()
+Task TaskQueue::pop()
 {
-    MutexLockGuard autolock(m_mutex);
-    while(m_isOpen && empty())
+    Task val;
     {
-        m_notEmpty.wait();
-    }
-    if(m_isOpen){
-        valueType number = m_que.front();
-        m_que.pop();
+        MutexLockGuard autolock(m_mutex);
+        while(m_isOpen && empty())
+        {
+            m_notEmpty.wait();
+        }
 
-        m_notFull.notify();
-        return number;
-    }else{
-        pthread_exit(NULL);
+        if(m_isOpen){
+            val = m_que.front();
+            m_que.pop();
+        }else{
+            return nullptr;
+        }
     }
+    m_notFull.notify();//老师的放在里面
+    return val;
 }
 
 
@@ -75,7 +80,7 @@ TaskQueue::valueType TaskQueue::pop()
 
 
 
-}
+}//wd
 
 
 

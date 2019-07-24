@@ -13,19 +13,18 @@ namespace wd
 using Task = std::function<void()>;
 class TaskQueue
 {
-    typedef Task valueType;
 public:
     TaskQueue(size_t queSize = 10);
     ~TaskQueue() {}
 
     bool empty() const;
     bool full() const;
-    void push(valueType number);
-    valueType pop();
+    void push(Task number);
+    Task pop();
     void wakeup();
 private:
     size_t m_queSize;
-    queue<valueType> m_que;
+    queue<Task> m_que;
     bool m_isOpen;
     MutexLock m_mutex;
     Condition m_notFull;
