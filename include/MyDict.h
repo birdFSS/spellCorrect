@@ -37,13 +37,15 @@ public:
 
     void init(const std::string& dictEnPath, const std::string& dictCnPath);
     void init(const std::string& dictEnPath, const std::string& dictCnPath,const std::string& IndexTablePath);
+
+    void showTableInTestFile(const std::string& path = "../test/table_test.txt");
+    void showDictInTestFile(const std::string& path = "../test/map_test.txt");
+
     void setIndexTable(const std::string& IndexTablePath);
 private:
     MyDict() {}
     ~MyDict() {}
 
-    void showTableInTestFile(const std::string& path = "../test/table_test.txt");
-    void showDictInTestFile(const std::string& path = "../test/map_test.txt");
 
 private:
     static MyDict * m_self;

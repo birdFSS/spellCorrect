@@ -35,9 +35,6 @@ void MyDict::init(const std::string& dictEnPath, const std::string& dictCnPath)
         m_dict.push_back(make_pair(word, freq));
     }
     
-#if 1
-    showDictInTestFile();
-#endif
 
 }
 
@@ -63,9 +60,6 @@ void MyDict::init(const std::string& dictEnPath, const std::string& dictCnPath,c
 {
     init(dictEnPath, dictCnPath);
     setIndexTable(IndexTablePath);
-#if 1
-    showTableInTestFile();
-#endif
 }
 
 void MyDict::showTableInTestFile(const std::string& path)

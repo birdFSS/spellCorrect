@@ -1,0 +1,102 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CC	Makefile	/^CC := g++$/;"	m
+CPPFLAGS	Makefile	/^CPPFLAGS := -std=c++11 -g $/;"	m
+CPP_FILE	Makefile	/^CPP_FILE :=  $(wildcard .\/*.cc) $/;"	m
+Condition	Condition.h	/^    Condition(MutexLock& mutex)$/;"	f	class:wd::Condition
+Condition	Condition.h	/^class Condition$/;"	c	namespace:wd
+INC_DIR	Makefile	/^INC_DIR :=  .\/$/;"	m
+INC_FILE	Makefile	/^INC_FILE := $(addprefix -I, $(INC_DIR))$/;"	m
+LIBS	Makefile	/^LIBS := -lpthread$/;"	m
+MutexLock	Mutexlock.h	/^    MutexLock()$/;"	f	class:wd::MutexLock
+MutexLock	Mutexlock.h	/^class MutexLock$/;"	c	namespace:wd
+MutexLockGuard	Mutexlock.h	/^    MutexLockGuard(MutexLock& mutex)$/;"	f	class:wd::MutexLockGuard
+MutexLockGuard	Mutexlock.h	/^class MutexLockGuard$/;"	c	namespace:wd
+MyTask	Task.h	/^    MyTask(int x, int y) : m_x(x), m_y(y) {}$/;"	f	class:wd::MyTask
+MyTask	Task.h	/^class MyTask :$/;"	c	namespace:wd
+MyThread	MyThread.h	/^    MyThread(Threadpool& th) : m_threadpool(th) {}$/;"	f	class:wd::MyThread
+MyThread	MyThread.h	/^class MyThread :$/;"	c	namespace:wd
+Noncopyable	Noncopyable.h	/^    Noncopyable() {}$/;"	f	class:wd::Noncopyable
+Noncopyable	Noncopyable.h	/^class Noncopyable$/;"	c	namespace:wd
+OBJS	Makefile	/^OBJS := $(patsubst %.cc, %.o, $(CPP_FILE))$/;"	m
+SRC_DIR	Makefile	/^SRC_DIR = .\/$/;"	m
+TARGET	Makefile	/^TARGET := pc.exe$/;"	m
+Task	Task.h	/^    Task() {}$/;"	f	class:wd::Task
+Task	Task.h	/^class Task$/;"	c	namespace:wd
+TaskQueue	TaskQueue.cc	/^TaskQueue::TaskQueue(size_t queSize) :$/;"	f	class:wd::TaskQueue
+TaskQueue	TaskQueue.h	/^class TaskQueue$/;"	c	namespace:wd
+Thread	Thread.h	/^    Thread() :$/;"	f	class:wd::Thread
+Thread	Thread.h	/^class Thread :$/;"	c	namespace:wd
+Threadpool	Threadpool.cc	/^Threadpool::Threadpool(size_t threadNum, size_t queSize) :$/;"	f	class:wd::Threadpool
+Threadpool	Threadpool.h	/^class Threadpool$/;"	c	namespace:wd
+addTask	Threadpool.cc	/^void Threadpool::addTask(Task* task)$/;"	f	class:wd::Threadpool
+create	Thread.cc	/^void Thread::create()$/;"	f	class:wd::Thread
+empty	TaskQueue.cc	/^bool TaskQueue::empty()  const $/;"	f	class:wd::TaskQueue
+full	TaskQueue.cc	/^bool TaskQueue::full() const $/;"	f	class:wd::TaskQueue
+getMutexPtr	Mutexlock.h	/^    pthread_mutex_t* getMutexPtr()$/;"	f	class:wd::MutexLock
+getTask	Threadpool.cc	/^Task* Threadpool::getTask()$/;"	f	class:wd::Threadpool
+isLocking	Mutexlock.h	/^    bool isLocking() const$/;"	f	class:wd::MutexLock
+join	Thread.cc	/^void Thread::join()$/;"	f	class:wd::Thread
+lock	Mutexlock.h	/^    void lock()$/;"	f	class:wd::MutexLock
+m_cond	Condition.h	/^    pthread_cond_t m_cond;$/;"	m	class:wd::Condition
+m_isExit	Threadpool.h	/^    bool m_isExit;$/;"	m	class:wd::Threadpool
+m_isOpen	TaskQueue.h	/^    bool m_isOpen;$/;"	m	class:wd::TaskQueue
+m_isRunning	Thread.h	/^    bool m_isRunning;$/;"	m	class:wd::Thread
+m_mutex	Condition.h	/^    MutexLock& m_mutex;$/;"	m	class:wd::Condition
+m_mutex	TaskQueue.h	/^    MutexLock m_mutex;$/;"	m	class:wd::TaskQueue
+m_nIsLocking	Mutexlock.h	/^    bool m_nIsLocking;$/;"	m	class:wd::MutexLock
+m_nMutex	Mutexlock.h	/^    MutexLock& m_nMutex;$/;"	m	class:wd::MutexLockGuard
+m_nMutex	Mutexlock.h	/^    pthread_mutex_t m_nMutex;$/;"	m	class:wd::MutexLock
+m_notEmpty	TaskQueue.h	/^    Condition m_notEmpty;$/;"	m	class:wd::TaskQueue
+m_notFull	TaskQueue.h	/^    Condition m_notFull;$/;"	m	class:wd::TaskQueue
+m_pthid	Thread.h	/^    pthread_t m_pthid;$/;"	m	class:wd::Thread
+m_que	TaskQueue.h	/^    queue<valueType> m_que;$/;"	m	class:wd::TaskQueue
+m_queSize	TaskQueue.h	/^    size_t m_queSize;$/;"	m	class:wd::TaskQueue
+m_queSize	Threadpool.h	/^    size_t m_queSize;$/;"	m	class:wd::Threadpool
+m_taskqueue	Threadpool.h	/^    TaskQueue m_taskqueue;$/;"	m	class:wd::Threadpool
+m_threadNum	Threadpool.h	/^    size_t m_threadNum;$/;"	m	class:wd::Threadpool
+m_threadpool	MyThread.h	/^    Threadpool & m_threadpool;    $/;"	m	class:wd::MyThread
+m_threads	Threadpool.h	/^    std::vector<std::unique_ptr<Thread>> m_threads;$/;"	m	class:wd::Threadpool
+m_x	Task.h	/^    int m_x;$/;"	m	class:wd::MyTask
+m_y	Task.h	/^    int m_y;$/;"	m	class:wd::MyTask
+main	test.cc	/^int main()$/;"	f
+notify	Condition.h	/^void Condition::notify()$/;"	f	class:wd::Condition
+notifyAll	Condition.h	/^void Condition::notifyAll()$/;"	f	class:wd::Condition
+objs	Makefile	/^objs:=$(addsuffix \/*.o, $(SRC_DIR))$/;"	m
+override	MyThread.h	/^    void run() override;$/;"	m	class:wd::MyThread
+pop	TaskQueue.cc	/^TaskQueue::valueType TaskQueue::pop()$/;"	f	class:wd::TaskQueue
+push	TaskQueue.cc	/^void TaskQueue::push(valueType number)$/;"	f	class:wd::TaskQueue
+run	MyThread.cc	/^void MyThread::run()$/;"	f	class:wd::MyThread
+start	Threadpool.cc	/^void Threadpool::start()$/;"	f	class:wd::Threadpool
+stop	Threadpool.cc	/^void Threadpool::stop()$/;"	f	class:wd::Threadpool
+threadFunc	Thread.cc	/^void * Thread::threadFunc(void * arg)$/;"	f	class:wd::Thread
+threadfunc	Threadpool.cc	/^void Threadpool::threadfunc()$/;"	f	class:wd::Threadpool
+unlock	Mutexlock.h	/^    void unlock()$/;"	f	class:wd::MutexLock
+valueType	TaskQueue.h	/^    typedef Task* valueType;$/;"	t	class:wd::TaskQueue
+wait	Condition.h	/^void Condition::wait()$/;"	f	class:wd::Condition
+wakeup	TaskQueue.cc	/^void TaskQueue::wakeup()$/;"	f	class:wd::TaskQueue
+wd	Condition.h	/^namespace wd$/;"	n
+wd	Mutexlock.h	/^namespace wd$/;"	n
+wd	MyThread.cc	/^namespace wd$/;"	n	file:
+wd	MyThread.h	/^namespace wd$/;"	n
+wd	Noncopyable.h	/^namespace wd$/;"	n
+wd	Task.h	/^namespace wd$/;"	n
+wd	TaskQueue.cc	/^namespace wd$/;"	n	file:
+wd	TaskQueue.h	/^namespace wd$/;"	n
+wd	Thread.cc	/^namespace wd$/;"	n	file:
+wd	Thread.h	/^namespace wd$/;"	n
+wd	Threadpool.cc	/^namespace wd$/;"	n	file:
+wd	Threadpool.h	/^namespace wd$/;"	n
+~Condition	Condition.h	/^    ~Condition()$/;"	f	class:wd::Condition
+~MutexLock	Mutexlock.h	/^    ~MutexLock()$/;"	f	class:wd::MutexLock
+~MutexLockGuard	Mutexlock.h	/^    ~MutexLockGuard()$/;"	f	class:wd::MutexLockGuard
+~MyThread	MyThread.h	/^    ~MyThread() {}$/;"	f	class:wd::MyThread
+~Noncopyable	Noncopyable.h	/^    ~Noncopyable() {}$/;"	f	class:wd::Noncopyable
+~Task	Task.h	/^    virtual ~Task() {}$/;"	f	class:wd::Task
+~TaskQueue	TaskQueue.h	/^    ~TaskQueue() {}$/;"	f	class:wd::TaskQueue
+~Thread	Thread.cc	/^Thread::~Thread()$/;"	f	class:wd::Thread
+~Threadpool	Threadpool.cc	/^Threadpool::~Threadpool()$/;"	f	class:wd::Threadpool

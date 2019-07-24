@@ -1,11 +1,11 @@
-INC_DIR :=  ./include/
-SRC_DIR = ./src/
-EXE_DIR := ./bin/
+INC_DIR :=  ../include/
+SRC_DIR = ./
+EXE_DIR := ./
 CC := g++
 CPPFLAGS := -g 
 LIBS := -lpthread
 INC_FILE := $(addprefix -I, $(INC_DIR))
-CPP_FILE :=  $(wildcard ./src/*.cc) 
+CPP_FILE :=  $(wildcard *.cc) 
 OBJS := $(patsubst %.cc, %.o, $(CPP_FILE))
 objs:=$(addsuffix /*.o, $(SRC_DIR))
 TARGET := $(addsuffix server.exe,$(EXE_DIR)) 		
