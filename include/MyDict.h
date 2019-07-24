@@ -14,6 +14,7 @@ public:
         if(m_self == nullptr)
         {
             m_self = new MyDict();
+            m_self->init("../dictionary/data/en_dict.uft8", "../dictionary/data/cn_dict.utf8", "../dictionary/data/index.utf8");
             atexit(destroy);
         }
         return m_self;

@@ -8,6 +8,6 @@ key ../data/key.utf8
 ip    192.168.4.194
 port  8888
 threadNum 10
-queSize   20
+queueSize   20
 
 

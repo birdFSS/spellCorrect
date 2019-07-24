@@ -8,9 +8,7 @@
 namespace wd
 {
 
-class MyCompare;
 class Cache;
-
 struct MyResult
 {
     MyResult(const std::string& word, int freq, int dist) :
@@ -22,6 +20,16 @@ struct MyResult
     int m_freq; //词频
     int m_dist; //最小距离
 };
+
+class MyCompare
+{
+public:
+    bool operator()(const MyResult& lhs, const MyResult& rhs)
+    {
+        return lhs.m_dist > rhs.m_dist;
+    }
+};
+
 
 class MyTask
 {
@@ -37,6 +45,8 @@ public:
     void statistic(std::set<int> & iset);   //进行计算
     int distance(const std::string& rhs);
     void response(Cache & cache);
+
+    void showQueue();   //test
 private:
     std::string m_queryWord;
     int m_peerfd;

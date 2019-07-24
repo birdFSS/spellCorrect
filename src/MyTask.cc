@@ -1,5 +1,8 @@
 #include "../include/MyTask.h"
 #include "../include/MyDict.h"
+#include <iostream>
+using std::cout;
+using std::endl;
 using std::string;
 
 namespace wd
@@ -13,28 +16,45 @@ int triple_min(const int &a, const int &b, const int &c)
 	return a < b ? (a < c ? a : c) : (b < c ? b : c);
 }
 
+void MyTask::showQueue()
+{
+    cout << " MyTask::showQueue()" << endl;
+    cout << m_queryWord << endl;
+    int i = 0;
+    while(i++ < 10 && m_resultQue.size() > 0)
+    {
+        MyResult elem = m_resultQue.top();
+        m_resultQue.pop();
+        cout << "word = " << elem.m_word << "  frequency = " << elem.m_freq << "  distance =  " << elem.m_dist << endl;
+    }
+
+}
+
 void MyTask::excute()
 {
     queryIndexTable();
-    response();
+    //response();
 }
 
 void MyTask::queryIndexTable()
 {
     MyDict* pDict = MyDict::getInstance();
     auto& m_indexTable = pDict->getIndexTable();    
+    pDict->showTableInTestFile();
 
     int len = length(m_queryWord);
     int pos = 0;
+    int step = nBytesCode(m_queryWord[0]);
     auto iter = m_indexTable.begin();
     for(int i=0; i< len; i++)
     {
-        string oneWord(m_queryWord, pos, 3);
+        string oneWord(m_queryWord, pos, step);
+        cout << oneWord << endl;
         if((iter = m_indexTable.find(oneWord)) != m_indexTable.end())
         {
             statistic(iter->second);
         }
-        pos += 3;
+        pos += step;
     }
 }
 
@@ -59,7 +79,7 @@ int MyTask::distance(const std::string & rhs)
     return editDistance(m_queryWord, rhs);
 }
 
-void MyTask::response(Cache& cache)
+void MyTask::response(Cache& )
 {
 
 }
