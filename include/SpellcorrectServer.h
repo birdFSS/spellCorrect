@@ -18,6 +18,11 @@ public:
     }
     ~SpellcorrectServer() {}
 
+    void start();
+    void onConnection(const TcpConnectionPtr& conn);
+    void onMessage(const TcpConnectionPtr& conn);
+    void onClose(const TcpConnectionPtr& conn);
+
 private:
     MyConf& m_conf;    
     TcpServer m_tcpServer;

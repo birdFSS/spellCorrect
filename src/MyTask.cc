@@ -33,7 +33,7 @@ void MyTask::showQueue()
 void MyTask::excute()
 {
     queryIndexTable();
-    //response();
+    response();
 }
 
 void MyTask::queryIndexTable()
@@ -79,9 +79,17 @@ int MyTask::distance(const std::string & rhs)
     return editDistance(m_queryWord, rhs);
 }
 
-void MyTask::response(Cache& )
+void MyTask::response()
 {
-
+    string msg;
+    int i = 3;
+    while(i-- != 0 && m_resultQue.size() != 0)
+    {
+        string tmp = m_resultQue.top().m_word;
+        m_resultQue.pop();
+        msg = msg + " " + tmp;
+    }
+    m_conn->sendInLoop(msg);
 }
 
 

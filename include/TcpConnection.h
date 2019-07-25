@@ -29,6 +29,9 @@ public:
     string toString() const;                       
     void shutdown();
 
+    int getPeerFd() const
+    { return m_sock.getFd(); }
+
 #if 1
     //这里先传递了EventLoop的成员 函数对象的引用过来，然后又调用std::move
     //从语法上讲std::move后的对象不应该再使用了。也就是说不该使用Eventloop中的三个成员 函数对象
