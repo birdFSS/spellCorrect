@@ -3,6 +3,8 @@
 namespace wd
 {
 
+
+//暂时先这样，后面再重构一下，可以MVC设计模式
 class Client
 {
 public:

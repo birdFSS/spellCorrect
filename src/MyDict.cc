@@ -15,7 +15,7 @@ using std::make_pair;
 namespace wd
 {
 
-MyDict * MyDict::m_self = wd::MyDict::getInstance();    //饱汉模式
+MyDict * MyDict::m_self = nullptr;    //因为需要由客户端初始化，所以要饿汉模式
 
 void MyDict::init(const std::string& dictEnPath, const std::string& dictCnPath)
 {

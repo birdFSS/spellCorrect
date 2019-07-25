@@ -24,16 +24,17 @@ struct MyResult
 class MyCompare
 {
 public:
+    //小顶堆，最上面实际优先级最低，最多保存10个
     bool operator()(const MyResult& lhs, const MyResult& rhs)
     {
         if(lhs.m_dist != rhs.m_dist)
         {
-            return lhs.m_dist > rhs.m_dist;
+            return lhs.m_dist < rhs.m_dist;
         }else if(lhs.m_freq != rhs.m_freq)
         {
-            return lhs.m_freq < rhs.m_freq;
+            return lhs.m_freq > rhs.m_freq;
         }else{
-            return lhs.m_word > rhs.m_word;
+            return lhs.m_word < rhs.m_word;
         }
     }
 };

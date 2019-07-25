@@ -49,7 +49,7 @@ void MyEpoll::waitEpollFd()
 {
     int readyNum;
     do{
-        readyNum = ::epoll_wait(m_efd, &*m_eventList.begin(), m_eventList.size(), 0);
+        readyNum = ::epoll_wait(m_efd, &*m_eventList.begin(), m_eventList.size(), -1);
     }while(-1 == readyNum && EINTR == errno);
 
     if(-1 == readyNum)
@@ -69,7 +69,7 @@ void MyEpoll::waitEpollFd()
             int fd = m_eventList[idx].data.fd;
             if(fd == STDIN_FILENO)
             {
-                char buff[512] = {0};
+                char buff[65536] = {0};
                 ::read(fd, buff, sizeof(buff));
                 buff[strlen(buff) - 1] = '\0';
                 ::write(m_client.getFd(), buff, strlen(buff));

@@ -79,6 +79,7 @@ ssize_t SocketIO::writen(const char* buff,size_t len)
     const char* p = buff;
     while(totRead < len)
     {
+        printf("send msg = %s", buff);
         ssize_t numRead = ::write(m_fd, p, len - totRead);
         if(numRead == -1 && errno == EINTR) //Interrupted  --> restart read()
         {

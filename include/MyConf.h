@@ -9,7 +9,7 @@ namespace wd
 class MyConf
 {
 public:
-    static MyConf* getInstance(const std::string& fileName = "../dictionary/conf/config.utf8")
+    static MyConf* getInstance(const std::string& fileName = "../conf/config.utf8")
     {
         if(m_self == nullptr)
         {
@@ -30,6 +30,14 @@ public:
     std::map<std::string, std::string>&
     getConfig()
     { return m_conf; }
+
+    void showConfig() const
+    {
+        for(auto& i : m_conf)
+        {
+            std::cout << i.first << "-->" << i.second << std::endl;
+        }
+    }
 
 private:
     MyConf(const std::string& fileName)

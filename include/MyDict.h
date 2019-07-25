@@ -9,12 +9,14 @@ namespace wd
 class MyDict
 {
 public:
-    static MyDict* getInstance() 
+    static MyDict* getInstance(const std::string& enDictPath= "../dictionary/data/en_dict.uft8",
+                                const std::string& cnDictPath = "../dictionary/data/cn_dict.utf8",
+                               const std::string& indexTablePath  = "../dictionary/data/index.utf8" ) 
     {
         if(m_self == nullptr)
         {
             m_self = new MyDict();
-            m_self->init("../dictionary/data/en_dict.uft8", "../dictionary/data/cn_dict.utf8", "../dictionary/data/index.utf8");
+            m_self->init(enDictPath, cnDictPath, indexTablePath);
             atexit(destroy);
         }
         return m_self;
@@ -44,7 +46,8 @@ public:
 
     void setIndexTable(const std::string& IndexTablePath);
 private:
-    MyDict() {}
+    MyDict()
+    {}
     ~MyDict() {}
 
 

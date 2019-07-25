@@ -11,7 +11,6 @@ namespace wd
 void SpellcorrectServer::onConnection(const wd::TcpConnectionPtr & conn)
 {
     cout << conn->toString() << " has connected!" << endl;
-    conn->send("welcome to server!");
 }
 
 void SpellcorrectServer::onClose(const wd::TcpConnectionPtr & conn)
@@ -25,7 +24,7 @@ void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
     cout << "onMessage..." << endl;
     string msg = conn->receive();
     cout << ">> receive msg from client : " << msg << endl;
-    conn->send(msg);
+
     wd::MyTask task(msg,conn->getPeerFd(),conn);
     m_threadpool.addTask(std::bind(&wd::MyTask::excute, &task));
 }

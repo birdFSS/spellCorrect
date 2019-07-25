@@ -10,8 +10,8 @@ namespace wd
 class SpellcorrectServer
 {
 public:
-    SpellcorrectServer(const std::string& fileName) :
-        m_conf(*MyConf::getInstance(fileName)),
+    SpellcorrectServer(MyConf &conf) :
+        m_conf(conf),
         m_tcpServer(m_conf.getConfig()["ip"],stoi( m_conf.getConfig()["port"])),
         m_threadpool(stoi(m_conf.getConfig()["threadNum"]),stoi(m_conf.getConfig()["queueSize"]))
     {

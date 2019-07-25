@@ -14,17 +14,19 @@ namespace wd
 
 EventLoop::EventLoop(Acceptor & accp) :
     m_efd(createEpollFd()),
+    m_eventfd(createEventFd()),
     m_acceptor(accp),
     m_eventList(1024),
     m_isLooping(false)
 {
     addEpollFdRead(accp.getFd());
+    addEpollFdRead(m_eventfd);
 }
 
 void EventLoop::handleRead()
 {
     uint64_t howmany;
-    int ret = ::read(m_eventfd, &howmany, sizeof(howmany));
+    int ret = ::read(m_eventfd, &howmany, sizeof(uint64_t));
     if(ret != sizeof(howmany))
     {
         perror("read");
@@ -43,7 +45,7 @@ void EventLoop::wakeup()
 
 int EventLoop::createEventFd()
 {
-    int ret = ::eventfd(0,0);
+    int ret = ::eventfd(10,0);  //这里写成(0,0)
     if(ret == -1)
     {
         perror("eventfd");
@@ -67,10 +69,12 @@ void EventLoop::doPendingFunctors()
 
 void EventLoop::runInLoop(Functor && cb)
 {
+    printf("EventLoop::runInLoop(Functor && cb)\n");
     {
         MutexLockGuard autolock(m_mutex);
         m_pendingFunctors.push_back(std::move(cb));
     }
+    ::sleep(1);
     wakeup();
 }
 
@@ -103,6 +107,7 @@ void EventLoop::unloop()
 void EventLoop::waitEpollFd()
 {
     int readyNum;
+    printf("go in epoll_wait\n");
     do{
         readyNum = epoll_wait(m_efd, &*m_eventList.begin(), m_eventList.size(), 5000);
     }while(-1 == readyNum && EINTR == errno);
@@ -129,8 +134,10 @@ void EventLoop::waitEpollFd()
                     handleNewConnection();
                 }
             }else if(fd == m_eventfd){
+                printf("IO thread recv msg, send to client\n");
                 if(m_eventList[idx].events & EPOLLIN)
                 {
+                    printf("IO thread recv msg, send to client\n");
                     handleRead();
                     cout << ">> before doPendingFunctors()" << endl;
                     doPendingFunctors();
@@ -156,7 +163,8 @@ void EventLoop::handleNewConnection()
     conn->setCloseCallBack(m_onClose);
     conn->setMessageCallBack(m_onMessage);
     m_conns.insert(std::make_pair(peerFd, conn));
-
+    
+    printf("EventLoop::handleNewConnection()\n");
     conn->handleConnectionCallBack();
 }
 

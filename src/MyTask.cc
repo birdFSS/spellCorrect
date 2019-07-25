@@ -38,9 +38,10 @@ void MyTask::excute()
 
 void MyTask::queryIndexTable()
 {
+    printf("querying: MyTask::queryIndexTable()\n");
     MyDict* pDict = MyDict::getInstance();
     auto& m_indexTable = pDict->getIndexTable();    
-    pDict->showTableInTestFile();
+    //pDict->showTableInTestFile();
 
     int len = length(m_queryWord);
     int pos = 0;
@@ -49,7 +50,7 @@ void MyTask::queryIndexTable()
     for(int i=0; i< len; i++)
     {
         string oneWord(m_queryWord, pos, step);
-        cout << oneWord << endl;
+        //cout << oneWord << endl;
         if((iter = m_indexTable.find(oneWord)) != m_indexTable.end())
         {
             statistic(iter->second);
@@ -66,12 +67,22 @@ void MyTask::statistic(std::set<int> & iset)
     MyDict* pDict = MyDict::getInstance();
     auto & m_dict = pDict->getDict();
 
+    printf("MyTask::statistic(std::set<int> & iset)\n");
     while(iter != iset.end())
     {
         dist = distance(m_dict[*iter].first);
-        m_resultQue.push(MyResult(m_dict[*iter].first, m_dict[*iter].second, dist));
+
+        MyResult result(m_dict[*iter].first, m_dict[*iter].second, dist);
+        m_resultQue.push(result);
+        //当队列中元素超过10个时
+        if(m_resultQue.size() > 10)
+        {
+            m_resultQue.pop();  //将目前优先级队列中优先级最低的踢出去
+        }
+        //printf("4 *iter = %d\n", *iter);
         ++iter;
     }
+    printf("out MyTask::statistic(std::set<int> & iset)\n");
 }
 
 int MyTask::distance(const std::string & rhs)
@@ -89,6 +100,8 @@ void MyTask::response()
         m_resultQue.pop();
         msg = msg + " " + tmp;
     }
+    printf("MyTask::response()\n");
+    printf("send msg : %s\n", msg.c_str());
     m_conn->sendInLoop(msg);
 }
 
