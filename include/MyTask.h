@@ -52,7 +52,7 @@ public:
     
     void excute(); //执行查询,供给线程调用
     void queryIndexTable(); //查询索引
-    void statistic(std::set<int> & iset);   //进行计算
+    void statistic(std::set<int> & iset, int* array);   //进行计算
     int distance(const std::string& rhs);
     //void response(Cache & cache);
     void response();

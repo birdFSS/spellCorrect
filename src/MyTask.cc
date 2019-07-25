@@ -1,5 +1,6 @@
 #include "../include/MyTask.h"
 #include "../include/MyDict.h"
+#include <algorithm>
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -47,19 +48,36 @@ void MyTask::queryIndexTable()
     int pos = 0;
     int step = nBytesCode(m_queryWord[0]);
     auto iter = m_indexTable.begin();
+
+    int array[10000] = {0};
     for(int i=0; i< len; i++)
     {
         string oneWord(m_queryWord, pos, step);
         //cout << oneWord << endl;
         if((iter = m_indexTable.find(oneWord)) != m_indexTable.end())
         {
-            statistic(iter->second);
+            statistic(iter->second, array);
         }
         pos += step;
     }
 }
 
-void MyTask::statistic(std::set<int> & iset)
+bool isVisited(int *array, int line_no)
+{
+    //位图
+    int index = line_no / 32;
+    int bit32 = line_no % 32;
+    if((array[index] & (1 << bit32)) != 0)
+    {
+        return true;    //已经访问过了
+    }else
+    {
+        array[index] = array[index] | (1 << bit32);
+        return false;
+    }
+}
+
+void MyTask::statistic(std::set<int> & iset, int* array)
 {
     auto iter = iset.begin();
     int dist;
@@ -72,9 +90,13 @@ void MyTask::statistic(std::set<int> & iset)
         dist = distance(m_dict[*iter].first);
 
         MyResult result(m_dict[*iter].first, m_dict[*iter].second, dist);
-        m_resultQue.push(result);
+        //去重，或者判断下重复的不加入
+        if(!isVisited(array,*iter))
+        {
+            m_resultQue.push(result);
+        }
         //当队列中元素超过10个时
-        if(m_resultQue.size() > 10)
+        if(m_resultQue.size() > 3)
         {
             m_resultQue.pop();  //将目前优先级队列中优先级最低的踢出去
         }

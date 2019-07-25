@@ -79,7 +79,13 @@ void MyEpoll::waitEpollFd()
             if(fd == m_client.getFd())
             {
                 char buff[65536] = {0};
-                ::read(m_client.getFd(), buff, sizeof(buff)); //后面换成循环读取
+                int ret = ::read(m_client.getFd(), buff, sizeof(buff)); //后面换成循环读取
+                if(0 == ret)
+                {
+                    printf("connect close...\n");
+                    m_isLooping = false;
+                    return;
+                }
                 ::write(STDOUT_FILENO, buff, strlen(buff));
                 printf("\n");
             }

@@ -57,7 +57,7 @@ ssize_t SocketIO::readline(char* buff, size_t maxlen)
                 ssize_t sz = idx + 1;
                 readn(p, sz);
                 total += sz;
-                p += sz;
+                p += sz - 1;
                 *p = '\0';
                 return total;
             }
