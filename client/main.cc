@@ -16,11 +16,6 @@ int recvCycle(int sfd, void* buf, int fileSize){
             return -1;
             break;
         }
-        //当服务器端中断时，要即时退出
-        //if(0 == ret){
-        //    printf("\n");
-        //    exit(0);
-        //}
         total += ret;
     }
     return 0;

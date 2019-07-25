@@ -24,7 +24,7 @@ MyEpoll::MyEpoll(Client & client) :
 
 int MyEpoll::createEpollFd()
 {
-   int ret = ::epoll_create1(0);
+   int ret = ::epoll_create1(0);    //epoll_create(0) 是错误的
    if(-1 == ret)
    {
        perror("epoll_create1");
