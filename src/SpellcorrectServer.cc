@@ -22,7 +22,7 @@ void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
 {
     //该回调函数实际不宜过长 2ms
     cout << "onMessage..." << endl;
-    string msg = conn->receive();
+    string msg = conn->receive();       //readline 对端需要传\n过来
     cout << ">> receive msg from client : " << msg << endl;
 
     wd::MyTask task(msg,conn->getPeerFd(),conn);

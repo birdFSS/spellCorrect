@@ -75,24 +75,24 @@ ssize_t SocketIO::readline(char* buff, size_t maxlen)
 
 ssize_t SocketIO::writen(const char* buff,size_t len)
 {
-    size_t totRead = 0;
+    size_t totWrite = 0;
     const char* p = buff;
-    while(totRead < len)
+    while(totWrite < len)
     {
-        printf("send msg = %s", buff);
-        ssize_t numRead = ::write(m_fd, p, len - totRead);
-        if(numRead == -1 && errno == EINTR) //Interrupted  --> restart read()
+        ssize_t numWrite = ::write(m_fd, p, len - totWrite);
+        printf("fd = %d\n msg=%s\nlen - totwtite = %ld\n", m_fd, p, len-totWrite);
+        if(numWrite == -1 && errno == EINTR) //Interrupted  --> restart read()
         {
             continue;
-        }else if(-1 == numRead){
+        }else if(-1 == numWrite){
             perror("write");
-            return totRead;
+            return totWrite;
         }else{
-            totRead += numRead;
-            p += numRead;
+            totWrite += numWrite;
+            p += numWrite;
         }
     }
-    return totRead;
+    return totWrite;
 }
 
 ssize_t SocketIO::recvPeek(char * buff, size_t len)

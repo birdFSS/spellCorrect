@@ -24,10 +24,10 @@ MyEpoll::MyEpoll(Client & client) :
 
 int MyEpoll::createEpollFd()
 {
-   int ret = ::epoll_create(0);
+   int ret = ::epoll_create1(0);
    if(-1 == ret)
    {
-       perror("epoll_create");
+       perror("epoll_create1");
    }
    return ret;
 }
@@ -59,11 +59,12 @@ void MyEpoll::waitEpollFd()
     }else if(0 == readyNum){
         cout << "timeout" << endl;
     }else{
+#if 1
         if(readyNum == static_cast<int>(m_eventList.size()))
         {
             m_eventList.resize(2 * readyNum);
         }
-
+#endif
         for(int idx = 0; idx != readyNum; ++idx)
         {
             int fd = m_eventList[idx].data.fd;
@@ -71,7 +72,7 @@ void MyEpoll::waitEpollFd()
             {
                 char buff[65536] = {0};
                 ::read(fd, buff, sizeof(buff));
-                buff[strlen(buff) - 1] = '\0';
+                //buff[strlen(buff) - 1] = '\0';    //服务器原因需要传\n过去
                 ::write(m_client.getFd(), buff, strlen(buff));
             }
 
@@ -80,10 +81,10 @@ void MyEpoll::waitEpollFd()
                 char buff[65536] = {0};
                 ::read(m_client.getFd(), buff, sizeof(buff)); //后面换成循环读取
                 ::write(STDOUT_FILENO, buff, strlen(buff));
+                printf("\n");
             }
         }
     }
-
 
 }
 

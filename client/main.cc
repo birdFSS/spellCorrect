@@ -1,5 +1,7 @@
 #include "MyEpoll.h"
 #include "Client.h"
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <string.h>
 
@@ -28,12 +30,25 @@ int main()
 {
     wd::Client client("192.168.4.194", 8888);
     client.run();
+
+    wd::MyEpoll epoll(client);
+    epoll.loop();
+    return 0;
+}
+
+
+
+int test1()
+{
+    wd::Client client("192.168.4.194", 8888);
+    client.run();
     char buff[65536] = {0};
     ::bzero(buff, strlen(buff));
     int ret;
 
-    strcpy(buff, "apple");
-    ret = ::write(client.getFd(), buff, sizeof(buff));
+    strcpy(buff, "apple\n");
+    printf("fd = %d\n", client.getFd());
+    ret = ::write(client.getFd(), buff, strlen(buff));
     if(-1 == ret)
     {
         perror("write");
@@ -43,20 +58,14 @@ int main()
 
 
     ::bzero(buff, strlen(buff));
-    ret =::read(client.getFd(), buff, sizeof(buff));
+    printf("fd = %d\n", client.getFd());
+    ret =::recv(client.getFd(), buff, sizeof(buff), 0);
+    printf("ret = %d\n", ret);
     if(-1 == ret)
     {
         perror("read");
         return -1;
     }
-    printf(">> info = %s", buff);
-
-    while(1);
-    //wd::MyEpoll epoll(client);
-    //epoll.loop();
+    printf(">> info = %s\n", buff);
     return 0;
 }
-
-
-
-

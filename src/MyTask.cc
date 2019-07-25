@@ -67,7 +67,6 @@ void MyTask::statistic(std::set<int> & iset)
     MyDict* pDict = MyDict::getInstance();
     auto & m_dict = pDict->getDict();
 
-    printf("MyTask::statistic(std::set<int> & iset)\n");
     while(iter != iset.end())
     {
         dist = distance(m_dict[*iter].first);
@@ -82,7 +81,6 @@ void MyTask::statistic(std::set<int> & iset)
         //printf("4 *iter = %d\n", *iter);
         ++iter;
     }
-    printf("out MyTask::statistic(std::set<int> & iset)\n");
 }
 
 int MyTask::distance(const std::string & rhs)

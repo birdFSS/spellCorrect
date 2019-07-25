@@ -32,8 +32,6 @@ TcpConnection::~TcpConnection()
 
 void TcpConnection::sendInLoop(const string& msg)
 {
-    printf("TcpConnection::sendInLoop(const string& msg)\n");
-    printf("send msg = %s\n", msg.c_str());
     m_loop->runInLoop(std::bind(&TcpConnection::send, this, msg));
 }
 

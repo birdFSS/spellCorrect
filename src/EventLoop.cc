@@ -3,6 +3,7 @@
 #include "../include/TcpConnection.h"
 #include <unistd.h>
 #include <assert.h>
+#include <string.h>
 #include <sys/eventfd.h>
 #include <iostream>
 
@@ -19,14 +20,15 @@ EventLoop::EventLoop(Acceptor & accp) :
     m_eventList(1024),
     m_isLooping(false)
 {
-    addEpollFdRead(accp.getFd());
+    addEpollFdRead(m_acceptor.getFd());
     addEpollFdRead(m_eventfd);
+    printf("listen fd = %d\neventfd = %d\n", m_acceptor.getFd(), m_eventfd);
 }
 
 void EventLoop::handleRead()
 {
     uint64_t howmany;
-    int ret = ::read(m_eventfd, &howmany, sizeof(uint64_t));
+    int ret = read(m_eventfd, &howmany, sizeof(uint64_t));
     if(ret != sizeof(howmany))
     {
         perror("read");
@@ -36,6 +38,7 @@ void EventLoop::handleRead()
 void EventLoop::wakeup()
 {
     uint64_t one = 1;
+    printf("EventLoop::wakeup()\n");
     int ret = ::write(m_eventfd, &one, sizeof(one));
     if(ret != sizeof(one))
     {
@@ -60,7 +63,7 @@ void EventLoop::doPendingFunctors()
         MutexLockGuard autolock(m_mutex);
         tmp.swap(m_pendingFunctors);
     }
-
+    printf("vector<Functor> size = %ld\n",tmp.size() );
     for(auto & functor : tmp)
     {
         functor();
@@ -74,7 +77,6 @@ void EventLoop::runInLoop(Functor && cb)
         MutexLockGuard autolock(m_mutex);
         m_pendingFunctors.push_back(std::move(cb));
     }
-    ::sleep(1);
     wakeup();
 }
 
@@ -112,6 +114,7 @@ void EventLoop::waitEpollFd()
         readyNum = epoll_wait(m_efd, &*m_eventList.begin(), m_eventList.size(), 5000);
     }while(-1 == readyNum && EINTR == errno);
 
+    printf("out epoll_wait, readyNum = %d \n" , readyNum);
     if(-1 == readyNum)
     {
         perror("epoll_wait");
@@ -134,10 +137,10 @@ void EventLoop::waitEpollFd()
                     handleNewConnection();
                 }
             }else if(fd == m_eventfd){
-                printf("IO thread recv msg, send to client\n");
                 if(m_eventList[idx].events & EPOLLIN)
                 {
                     printf("IO thread recv msg, send to client\n");
+                    printf("size = %ld\n", m_pendingFunctors.size());
                     handleRead();
                     cout << ">> before doPendingFunctors()" << endl;
                     doPendingFunctors();
@@ -156,6 +159,7 @@ void EventLoop::waitEpollFd()
 void EventLoop::handleNewConnection()
 {
     int peerFd = m_acceptor.accept();
+    printf("new connect fd = %d\n", peerFd);
     addEpollFdRead(peerFd);
     TcpConnectionPtr conn(new TcpConnection(peerFd, this));
     //回调函数设置
@@ -210,7 +214,7 @@ bool EventLoop::isConnectionClosed(int fd)
     int ret;
     do{
         char buf[1024];
-        ret = ::recv(fd, buf, 1024, MSG_PEEK);
+        ret = recv(fd, buf, 1024, MSG_PEEK);
     }while(-1 == ret && EINTR == errno);
 
     return ret == 0;
