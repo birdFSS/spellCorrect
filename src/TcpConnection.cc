@@ -1,6 +1,7 @@
 #include "../include/TcpConnection.h"
 #include "../include/EventLoop.h"
-#include "sys/socket.h"
+#include <string.h>
+#include <sys/socket.h>
 #include <iostream>
 #include <sstream>
 
@@ -37,9 +38,10 @@ void TcpConnection::sendInLoop(const string& msg)
 
 string TcpConnection::receive()
 {
-    char buf[65536] = {0};
-    m_socketIO.readline(buf, sizeof(buf));
-    return string(buf);
+    Train msg;
+    m_socketIO.readn(reinterpret_cast<char*>(&msg), TRAIN_HEAD);
+    m_socketIO.readn(msg._buf, msg._size - TRAIN_HEAD);  //修改后
+    return string(msg._buf);
 }
 
 string TcpConnection::toString() const
@@ -52,7 +54,11 @@ string TcpConnection::toString() const
 
 void TcpConnection::send(const string& msg)
 {
-    m_socketIO.writen(msg.c_str(), msg.size());
+    Train info;
+    ::bzero(&info, sizeof(Train));
+    info._size = msg.size() + TRAIN_HEAD;
+    strcpy(info._buf, msg.c_str());
+    m_socketIO.writen(reinterpret_cast<char*>(&info), info._size); 
 }
 
 void TcpConnection::shutdown()

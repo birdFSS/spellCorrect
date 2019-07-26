@@ -6,6 +6,9 @@
 #include <functional>
 #include <string>
 #include <memory>
+#define TRAIN_HEAD 4
+#define TRAIN_BUF_SIZE 2048
+
 using std::string;
 namespace wd
 {
@@ -13,6 +16,12 @@ class TcpConnection;
 class EventLoop;
 using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
 using TcpConnectionCallBack = std::function<void(const TcpConnectionPtr&)>;
+
+struct Train
+{
+    int _size;
+    char _buf[TRAIN_BUF_SIZE];
+};
 
 class TcpConnection :
     Noncopyable,

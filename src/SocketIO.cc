@@ -80,7 +80,7 @@ ssize_t SocketIO::writen(const char* buff,size_t len)
     while(totWrite < len)
     {
         ssize_t numWrite = ::write(m_fd, p, len - totWrite);
-        printf("fd = %d\n msg=%s\nlen - totwtite = %ld\n", m_fd, p, len-totWrite);
+        //printf("fd = %d\n msg=%s\nlen - totwtite = %ld\n", m_fd, p, len-totWrite);
         if(numWrite == -1 && errno == EINTR) //Interrupted  --> restart read()
         {
             continue;

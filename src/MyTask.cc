@@ -39,10 +39,8 @@ void MyTask::excute()
 
 void MyTask::queryIndexTable()
 {
-    printf("querying: MyTask::queryIndexTable()\n");
     MyDict* pDict = MyDict::getInstance();
     auto& m_indexTable = pDict->getIndexTable();    
-    //pDict->showTableInTestFile();
 
     int len = length(m_queryWord);
     int pos = 0;
@@ -120,8 +118,8 @@ void MyTask::response()
         m_resultQue.pop();
         msg = msg + " " + tmp;
     }
-    printf("MyTask::response()\n");
-    printf("send msg : %s\n", msg.c_str());
+    //printf("MyTask::response()\n");
+    //printf("send msg : %s\n", msg.c_str());
     m_conn->sendInLoop(msg);
 }
 

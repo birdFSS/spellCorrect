@@ -16,6 +16,7 @@ MyEpoll::MyEpoll(Client & client) :
     m_efd(createEpollFd()),
     m_isLooping(false),
     m_client(client),
+    m_clientIO(m_client.getFd()),
     m_eventList(2)
 {
     addEpollFdRead(STDIN_FILENO);
@@ -73,20 +74,15 @@ void MyEpoll::waitEpollFd()
                 char buff[65536] = {0};
                 ::read(fd, buff, sizeof(buff));
                 //buff[strlen(buff) - 1] = '\0';    //服务器原因需要传\n过去
-                ::write(m_client.getFd(), buff, strlen(buff));
+                //::write(m_client.getFd(), buff, strlen(buff));
+                buff[strlen(buff) - 1] = '\0';      //修改后，服务器不用readline，这边也要去掉'\n'
+                m_clientIO.sendToServer(buff);
             }
 
             if(fd == m_client.getFd())
             {
-                char buff[65536] = {0};
-                int ret = ::read(m_client.getFd(), buff, sizeof(buff)); //后面换成循环读取
-                if(0 == ret)
-                {
-                    printf("connect close...\n");
-                    m_isLooping = false;
-                    return;
-                }
-                ::write(STDOUT_FILENO, buff, strlen(buff));
+                std::string str= m_clientIO.recvFromServer();
+                ::write(STDOUT_FILENO, str.c_str(), str.size());
                 printf("\n");
             }
         }

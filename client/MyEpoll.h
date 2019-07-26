@@ -1,4 +1,5 @@
 #pragma once
+#include "ClientIO.h"
 #include <sys/epoll.h>
 #include <vector>
 
@@ -6,6 +7,7 @@ namespace wd
 {
 
 class Client;
+
 class MyEpoll
 {
 public:
@@ -21,6 +23,7 @@ private:
     int m_efd;
     bool m_isLooping;
     Client & m_client;
+    ClientIO m_clientIO;
     std::vector<struct epoll_event> m_eventList;
 };
 

@@ -1,4 +1,5 @@
 #include "Client.h"
+#include <unistd.h>
 
 namespace wd
 {
@@ -14,16 +15,14 @@ void Client::connectToServer()
     if(-1 == m_fd)
     {
         perror("socket");
+        ::exit(-1);
     }
     if(::connect(m_fd, (struct sockaddr*)m_addr.getInetAddressPtr(),sizeof(struct sockaddr)) == -1)
     {
         perror("connect");
+        ::exit(-1);
     }
 }
-
-
-
-
 
 
 

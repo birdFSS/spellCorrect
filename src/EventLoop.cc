@@ -63,7 +63,7 @@ void EventLoop::doPendingFunctors()
         MutexLockGuard autolock(m_mutex);
         tmp.swap(m_pendingFunctors);
     }
-    printf("vector<Functor> size = %ld\n",tmp.size() );
+    //printf("vector<Functor> size = %ld\n",tmp.size() );
     for(auto & functor : tmp)
     {
         functor();
@@ -72,7 +72,7 @@ void EventLoop::doPendingFunctors()
 
 void EventLoop::runInLoop(Functor && cb)
 {
-    printf("EventLoop::runInLoop(Functor && cb)\n");
+    //printf("EventLoop::runInLoop(Functor && cb)\n");
     {
         MutexLockGuard autolock(m_mutex);
         m_pendingFunctors.push_back(std::move(cb));
@@ -109,12 +109,12 @@ void EventLoop::unloop()
 void EventLoop::waitEpollFd()
 {
     int readyNum;
-    printf("go in epoll_wait\n");
+    //printf("go in epoll_wait\n");
     do{
         readyNum = epoll_wait(m_efd, &*m_eventList.begin(), m_eventList.size(), 5000);
     }while(-1 == readyNum && EINTR == errno);
 
-    printf("out epoll_wait, readyNum = %d \n" , readyNum);
+    //printf("out epoll_wait, readyNum = %d \n" , readyNum);
     if(-1 == readyNum)
     {
         perror("epoll_wait");
@@ -139,8 +139,6 @@ void EventLoop::waitEpollFd()
             }else if(fd == m_eventfd){
                 if(m_eventList[idx].events & EPOLLIN)
                 {
-                    printf("IO thread recv msg, send to client\n");
-                    printf("size = %ld\n", m_pendingFunctors.size());
                     handleRead();
                     cout << ">> before doPendingFunctors()" << endl;
                     doPendingFunctors();
@@ -168,7 +166,6 @@ void EventLoop::handleNewConnection()
     conn->setMessageCallBack(m_onMessage);
     m_conns.insert(std::make_pair(peerFd, conn));
     
-    printf("EventLoop::handleNewConnection()\n");
     conn->handleConnectionCallBack();
 }
 
