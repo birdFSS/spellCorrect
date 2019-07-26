@@ -109,7 +109,7 @@ int MyTask::distance(const std::string & rhs)
 
 void MyTask::response()
 {
-    string jsonHead = "{\"result\":[";
+    string jsonHead = "{\"" + m_queryWord + "\":[";
     string msg;
     int i = WORD_NUMBER;
     while(i-- != 0 && m_resultQue.size() != 0)
