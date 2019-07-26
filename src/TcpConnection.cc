@@ -39,6 +39,7 @@ void TcpConnection::sendInLoop(const string& msg)
 string TcpConnection::receive()
 {
     Train msg;
+    ::bzero(&msg, sizeof(Train));
     m_socketIO.readn(reinterpret_cast<char*>(&msg), TRAIN_HEAD);
     m_socketIO.readn(msg._buf, msg._size - TRAIN_HEAD);  //修改后
     return string(msg._buf);

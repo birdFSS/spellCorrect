@@ -25,6 +25,7 @@ void ClientIO::sendToServer(const char *msg)
     ::bzero(&train, sizeof(Train));
     train._size = strlen(msg) + TRAIN_HEAD_SIZE;
     ::strcpy(train._buf, msg);
+    //printf("send info :$%s$", msg);
     writen(reinterpret_cast<char*>(&train), train._size);
 }
 

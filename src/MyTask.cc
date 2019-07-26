@@ -1,5 +1,6 @@
 #include "../include/MyTask.h"
 #include "../include/MyDict.h"
+#include <json/json.h>
 #include <algorithm>
 #include <iostream>
 using std::cout;
@@ -94,7 +95,7 @@ void MyTask::statistic(std::set<int> & iset, int* array)
             m_resultQue.push(result);
         }
         //当队列中元素超过10个时
-        if(m_resultQue.size() > 3)
+        if(m_resultQue.size() > WORD_NUMBER)
         {
             m_resultQue.pop();  //将目前优先级队列中优先级最低的踢出去
         }
@@ -110,16 +111,22 @@ int MyTask::distance(const std::string & rhs)
 
 void MyTask::response()
 {
+    string jsonHead = "{\"result\":[";
     string msg;
-    int i = 3;
+    int i = WORD_NUMBER;
     while(i-- != 0 && m_resultQue.size() != 0)
     {
         string tmp = m_resultQue.top().m_word;
         m_resultQue.pop();
-        msg = msg + " " + tmp;
+        if(i != WORD_NUMBER - 1)
+        {
+            msg =  "\"" + tmp + "\"," + msg; 
+        }else{
+            msg = "\"" + tmp + "\"" + msg;
+        }
     }
-    //printf("MyTask::response()\n");
-    //printf("send msg : %s\n", msg.c_str());
+    msg = jsonHead + msg + "]}";
+    printf("%s$$\n", msg.c_str());
     m_conn->sendInLoop(msg);
 }
 

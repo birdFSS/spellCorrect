@@ -1,6 +1,7 @@
 #include "MyEpoll.h"
 #include "Client.h"
 
+#include <json/json.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -56,7 +57,7 @@ void MyEpoll::waitEpollFd()
     if(-1 == readyNum)
     {
         perror("epoll_wait");
-        return;
+        ::exit(-1);
     }else if(0 == readyNum){
         cout << "timeout" << endl;
     }else{
@@ -82,8 +83,15 @@ void MyEpoll::waitEpollFd()
             if(fd == m_client.getFd())
             {
                 std::string str= m_clientIO.recvFromServer();
-                ::write(STDOUT_FILENO, str.c_str(), str.size());
-                printf("\n");
+                Json::Reader reader;
+                Json::StyledWriter styled_writer;
+                Json::Value val;
+                if(!reader.parse(str, val))
+                {
+                    perror(">>json parse error");
+                    return;
+                }
+                cout << styled_writer.write(val) << endl;
             }
         }
     }

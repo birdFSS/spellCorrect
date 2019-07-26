@@ -4,6 +4,7 @@
 #include <string>
 #include <set>
 #include <queue>
+#define WORD_NUMBER 5
 
 namespace wd
 {
