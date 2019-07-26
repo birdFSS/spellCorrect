@@ -89,7 +89,7 @@ void MyEpoll::waitEpollFd()
                 if(!reader.parse(str, val))
                 {
                     perror(">>json parse error");
-                    return;
+                    exit(-1);
                 }
                 cout << styled_writer.write(val) << endl;
             }

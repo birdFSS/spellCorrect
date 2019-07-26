@@ -76,7 +76,7 @@ void Threadpool::stop()
     }
 }
 
-void Threadpool::addTask(Task task)
+void Threadpool::addTask(Task&& task)
 {
     m_taskqueue.push(task);
 }

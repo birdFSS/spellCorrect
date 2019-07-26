@@ -20,7 +20,7 @@ public:
     ~Threadpool();
 
     void start();
-    void addTask(ElemType elem);
+    void addTask(Task && elem);
     void stop();
 private:
     ElemType getTask();

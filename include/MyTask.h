@@ -44,7 +44,7 @@ public:
 class MyTask
 {
 public:
-    MyTask(const std::string& word, int peerfd, TcpConnectionPtr conn):
+    MyTask(const std::string& word, int peerfd,const TcpConnectionPtr& conn):
         m_queryWord(word),
         m_peerfd(peerfd),
         m_conn(conn)
@@ -59,6 +59,12 @@ public:
     void response();
 
     void showQueue();   //test
+
+private:
+    int editDistance(const std::string & lhs, const std::string &rhs);
+    std::size_t length(const std::string &str);
+    size_t nBytesCode(const char ch);
+    bool isVisited(int *array, int line_no);
 private:
     std::string m_queryWord;
     int m_peerfd;

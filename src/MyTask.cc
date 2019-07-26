@@ -9,10 +9,7 @@ using std::string;
 
 namespace wd
 {
-size_t nBytesCode(const char ch);
-std::size_t length(const std::string &str);
-int editDistance(const std::string & lhs, const std::string &rhs);
-
+inline
 int triple_min(const int &a, const int &b, const int &c)
 {
 	return a < b ? (a < c ? a : c) : (b < c ? b : c);
@@ -49,9 +46,11 @@ void MyTask::queryIndexTable()
     auto iter = m_indexTable.begin();
 
     int array[10000] = {0};
+    //printf("word=%s$,size=%ld$\n", m_queryWord.c_str(), m_queryWord.size());
     for(int i=0; i< len; i++)
     {
-        string oneWord(m_queryWord, pos, step);
+        //printf("pos=%d$\n", pos);
+        string oneWord(m_queryWord, pos, step); //这里有问题
         //cout << oneWord << endl;
         if((iter = m_indexTable.find(oneWord)) != m_indexTable.end())
         {
@@ -61,7 +60,7 @@ void MyTask::queryIndexTable()
     }
 }
 
-bool isVisited(int *array, int line_no)
+bool MyTask::isVisited(int *array, int line_no)
 {
     //位图
     int index = line_no / 32;
@@ -82,13 +81,12 @@ void MyTask::statistic(std::set<int> & iset, int* array)
     int dist;
 
     MyDict* pDict = MyDict::getInstance();
-    auto & m_dict = pDict->getDict();
+    const auto & m_dict = pDict->getDict();
 
     while(iter != iset.end())
     {
-        dist = distance(m_dict[*iter].first);
-
-        MyResult result(m_dict[*iter].first, m_dict[*iter].second, dist);
+        dist = distance(m_dict.at(*iter).first);
+        MyResult result(m_dict.at(*iter).first, m_dict.at(*iter).second, dist);
         //去重，或者判断下重复的不加入
         if(!isVisited(array,*iter))
         {
@@ -132,7 +130,7 @@ void MyTask::response()
 
 
 /// 获取一个字节高位开头为1的个数
-size_t nBytesCode(const char ch)
+size_t MyTask::nBytesCode(const char ch)
 {
 	if(ch & (1 << 7))
 	{
@@ -152,7 +150,7 @@ size_t nBytesCode(const char ch)
 }  
   
 
-std::size_t length(const std::string &str)
+std::size_t MyTask::length(const std::string &str)
 {
 	std::size_t ilen = 0;
 	for(std::size_t idx = 0; idx != str.size(); ++idx)
@@ -165,7 +163,7 @@ std::size_t length(const std::string &str)
 }
 
 
-int editDistance(const std::string & lhs, const std::string &rhs)
+int MyTask::editDistance(const std::string & lhs, const std::string &rhs)
 {//计算最小编辑距离-包括处理中英文
 	size_t lhs_len = length(lhs);
 	size_t rhs_len = length(rhs);
@@ -184,7 +182,9 @@ int editDistance(const std::string & lhs, const std::string &rhs)
 	for(std::size_t dist_i = 1, lhs_idx = 0; dist_i <= lhs_len; ++dist_i, ++lhs_idx)
 	{
 		size_t nBytes = nBytesCode(lhs[lhs_idx]);
+        printf("pos=%ld$size=%ld$\n", lhs_idx,lhs.size());
 		sublhs = lhs.substr(lhs_idx, nBytes);
+        printf("pos=%ld$size=%ld$\n", lhs_idx,lhs.size());
 		lhs_idx += (nBytes - 1);
 
 		for(std::size_t dist_j = 1, rhs_idx = 0; dist_j <= rhs_len; ++dist_j, ++rhs_idx)
