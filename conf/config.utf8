@@ -7,6 +7,6 @@ threadNum 10
 queueSize   20
 cacheFilePath ../data/Cache/Cache.utf8
 initTime 1
-intervalTime 1
+intervalTime 10
 
 
