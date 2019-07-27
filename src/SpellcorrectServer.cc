@@ -31,8 +31,9 @@ void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
     
     wd::MyTask task(msg,conn->getPeerFd(),conn);
     m_threadpool.addTask(
-        std::bind(&wd::MyTask::excute, task, CacheManager::getInstance()->getCache(m_cacheId))
-    );
+        std::bind(&wd::MyTask::excute, task, 
+            std::ref(CacheManager::getInstance()->getCache(m_cacheId))
+    ));
     m_cacheId = (m_cacheId + 1) % m_threadpool.getThreadNum();
 }
 
