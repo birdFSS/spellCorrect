@@ -13,7 +13,6 @@ class SpellcorrectServer
 {
 public:
     SpellcorrectServer(MyConf &conf) :
-        m_cacheId(0),
         m_conf(conf),
         m_timer(new TimerThread(
                 stoi(m_conf.getConfig().at("initTime")),
@@ -29,6 +28,7 @@ public:
                 stoi(m_conf.getConfig()["queueSize"])
                 )
     {
+
     }
     ~SpellcorrectServer() {}
 
@@ -38,7 +38,6 @@ public:
     void onClose(const TcpConnectionPtr& conn);
 
 private:
-    int m_cacheId;      //轮询访问每个cache,从0到threadNum，再从0开始
     MyConf& m_conf;    
     std::shared_ptr<TimerThread> m_timer;
     TcpServer m_tcpServer;

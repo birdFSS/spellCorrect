@@ -16,6 +16,13 @@ public:
     int getFd() const
     { return m_timerfd; }
     void handleRead();
+    void runCallBack()
+    {
+        if(m_isStarted && m_cb)
+        {
+            m_cb();
+        }
+    }
 private:
 
     int createTimerfd();

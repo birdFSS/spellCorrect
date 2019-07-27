@@ -1,15 +1,44 @@
 #include "../include/Thread.h"
 
-
+#include <functional>
 namespace wd 
 {
 
+//TLS线程局部存储
+namespace current_thread
+{
+    __thread int CacheIndex = 0;
+}
+
+struct ThreadData
+{
+    using ThreadCallBack = std::function<void()>;
+
+    ThreadData(const int & num, ThreadCallBack && cb) :
+        m_CacheIndex(num),
+        m_cb(std::move(cb))
+    {}
+
+    int m_CacheIndex;
+    ThreadCallBack m_cb;
+
+    void runInThread()
+    {
+        current_thread::CacheIndex= m_CacheIndex;
+        if(m_cb)
+        {
+            m_cb();
+        }
+    }
+};
+
 void Thread::create()
 {
-    if(pthread_create(&m_pthid, nullptr, threadFunc, this) == -1)
+    ThreadData* pThreadData = new ThreadData(m_CacheIndex, std::move(m_call));
+
+    if(pthread_create(&m_pthid, nullptr, threadFunc, pThreadData) == -1)
     {
         perror("pthread_create");
-        exit(-1);
     }
     m_isRunning = true;
 }
@@ -31,9 +60,11 @@ Thread::~Thread()
 
 void * Thread::threadFunc(void * arg)
 {
-    Thread* pthread = static_cast<Thread*>(arg);
-    if(pthread)
-        pthread->m_call();
+    ThreadData* pThreadData= static_cast<ThreadData*>(arg);
+    if(pThreadData)
+        pThreadData->runInThread();
+
+    delete pThreadData;
     return nullptr;
 }
 

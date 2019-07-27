@@ -1,6 +1,7 @@
 #include "../include/MyTask.h"
 #include "../include/MyDict.h"
-#include "../include/Cache.h"
+#include "../include/Thread.h"
+#include "../include/CacheManager.h"
 #include <json/json.h>
 #include <algorithm>
 #include <iostream>
@@ -30,8 +31,9 @@ void MyTask::showQueue()
 
 }
 
-void MyTask::excute(Cache& cache)
+void MyTask::excute()
 {   
+    auto cache = CacheManager::getInstance()->getCache(current_thread::CacheIndex);
     auto iter = cache.getHashMap().find(m_queryWord);
     cout << "map size = " << cache.getHashMap().size() << endl;
     if((iter  != cache.getHashMap().end()))

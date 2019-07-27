@@ -23,6 +23,15 @@ public:
         m_timer.stop();
         m_thread.join();
     }
+
+    void runTimeFunc()
+    {
+        m_timer.handleRead();
+        m_timer.runCallBack();
+    }
+
+    int getFd() const
+    { return m_timer.getFd(); }
 private:
     Timer m_timer;
     Thread m_thread;

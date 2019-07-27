@@ -31,10 +31,8 @@ void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
     
     wd::MyTask task(msg,conn->getPeerFd(),conn);
     m_threadpool.addTask(
-        std::bind(&wd::MyTask::excute, task, 
-            std::ref(CacheManager::getInstance()->getCache(m_cacheId))
-    ));
-    m_cacheId = (m_cacheId + 1) % m_threadpool.getThreadNum();
+        std::bind(&wd::MyTask::excute, task)
+        );
 }
 
 void SpellcorrectServer::start()
@@ -47,14 +45,16 @@ void SpellcorrectServer::start()
     auto pCacheMana = CacheManager::getInstance();
     pCacheMana->initCache(stoi(config.at("threadNum")), config.at("cacheFilePath"));
 
-    m_timer->start();
-
     m_threadpool.start();
 
     using namespace std::placeholders;
     m_tcpServer.setConnectionCallBack(std::bind(&SpellcorrectServer::onConnection, this, _1));
     m_tcpServer.setMessageCallBack(std::bind(&SpellcorrectServer::onMessage, this, _1));
     m_tcpServer.setCloseCallBack(std::bind(&SpellcorrectServer::onClose, this, _1));
+
+    m_tcpServer.setTimer(m_timer);
+    m_timer->start();
+
     m_tcpServer.start();
 
 }
