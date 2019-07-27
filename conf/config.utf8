@@ -1,7 +1,3 @@
-en_dir ../source/english/
-cn_dir ../source/chinese/
-en_ignore ../conf/en_ignore.utf8
-cn_ignore ../conf/cn_ignore.utf8
 en_dict ../dictionary/data/en_dict.uft8
 cn_dict ../dictionary/data/cn_dict.utf8
 indexTable ../dictionary/data/index.utf8
@@ -9,5 +5,6 @@ ip    192.168.4.194
 port  8888
 threadNum 10
 queueSize   20
+cacheFilePath ../data/Cache/Cache.utf8
 
 

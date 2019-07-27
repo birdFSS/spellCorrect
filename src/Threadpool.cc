@@ -1,5 +1,6 @@
 #include "../include/Threadpool.h"
 #include "../include/Thread.h"
+#include "../include/CacheManager.h"
 #include <unistd.h>
 
 #include <memory>
@@ -29,10 +30,12 @@ Threadpool::~Threadpool()
 
 void Threadpool::start()
 {
+    CacheManager* caches = CacheManager::getInstance(); //cache初始化交由SpellCorrectServer
     for(size_t idx = 0; idx != m_threadNum; ++idx)
     {
         unique_ptr<Thread> pthread(new Thread(
-            std::bind(&Threadpool::threadFunc, this) 
+            std::bind(&Threadpool::threadFunc, this),
+            &caches->getCache(idx)
         ));
         m_threads.push_back(std::move(pthread));
         //m_threads.push_back(pthread);//error can't copy unique_ptr

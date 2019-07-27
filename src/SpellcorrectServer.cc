@@ -1,5 +1,7 @@
 #include "../include/SpellcorrectServer.h"
 #include "../include/MyTask.h"
+#include "../include/CacheManager.h"
+#include <string>
 #include <iostream>
 #include <functional>
 
@@ -31,6 +33,11 @@ void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
 
 void SpellcorrectServer::start()
 {
+    auto& config = m_conf.getConfig();
+    
+    auto pCacheMana = CacheManager::getInstance();
+    pCacheMana->initCache(stoi(config.at("threadNum")), config.at("cacheFilePath"));
+
     m_threadpool.start();
     using namespace std::placeholders;
     m_tcpServer.setConnectionCallBack(std::bind(&SpellcorrectServer::onConnection, this, _1));
