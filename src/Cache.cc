@@ -28,7 +28,6 @@ Cache::~Cache()
 //后面加上lru算法
 void Cache::addElement(const std::string& key, const std::string &value)
 {
-    cout << "Cache::addElement" << endl;
     m_hashMap.insert(make_pair(key, value));
 }
 

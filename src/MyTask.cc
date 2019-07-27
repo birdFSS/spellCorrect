@@ -33,7 +33,7 @@ void MyTask::showQueue()
 
 void MyTask::excute()
 {   
-    auto cache = CacheManager::getInstance()->getCache(current_thread::CacheIndex);
+    auto& cache = CacheManager::getInstance()->getCache(current_thread::CacheIndex);
     auto iter = cache.getHashMap().find(m_queryWord);
     cout << "map size = " << cache.getHashMap().size() << endl;
     if((iter  != cache.getHashMap().end()))
