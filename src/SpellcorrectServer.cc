@@ -1,6 +1,8 @@
 #include "../include/SpellcorrectServer.h"
+#include "../include/CacheManager.h"
 #include "../include/MyTask.h"
 #include <iostream>
+#include <string>
 #include <functional>
 
 using std::cout;
@@ -24,13 +26,18 @@ void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
     cout << "onMessage..." << endl;
     string msg = conn->receive();       
     cout << ">> receive msg from client : " << msg << endl;
-
+    
     wd::MyTask task(msg,conn->getPeerFd(),conn);
-    m_threadpool.addTask(std::bind(&wd::MyTask::excute, task));
+    m_threadpool.addTask(
+        std::bind(&wd::MyTask::excute, task, CacheManager::getInstance()->getCache(m_cacheId))
+    );
+    m_cacheId = (m_cacheId + 1) % m_threadpool.getThreadNum();
 }
 
 void SpellcorrectServer::start()
 {
+    CacheManager* pCache = CacheManager::getInstance();
+    pCache->initCache(stoi(m_conf.getConfig().at("threadNum")), m_conf.getConfig().at("cacheFilePath"));
     m_threadpool.start();
     using namespace std::placeholders;
     m_tcpServer.setConnectionCallBack(std::bind(&SpellcorrectServer::onConnection, this, _1));

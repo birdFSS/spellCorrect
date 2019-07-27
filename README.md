@@ -5,7 +5,7 @@ spell correct
 7、2019/7/27
 
     a.今天主要任务是将Cache加入项目中。如果时间有余，就看看redis
-
+    b.默认设置Cache个数和线程个数相同
 
 
 

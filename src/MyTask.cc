@@ -1,5 +1,6 @@
 #include "../include/MyTask.h"
 #include "../include/MyDict.h"
+#include "../include/Cache.h"
 #include <json/json.h>
 #include <algorithm>
 #include <iostream>
@@ -29,10 +30,10 @@ void MyTask::showQueue()
 
 }
 
-void MyTask::excute()
+void MyTask::excute(Cache& cache)
 {
     queryIndexTable();
-    response();
+    response(cache);
 }
 
 void MyTask::queryIndexTable()
@@ -107,7 +108,7 @@ int MyTask::distance(const std::string & rhs)
     return editDistance(m_queryWord, rhs);
 }
 
-void MyTask::response()
+void MyTask::response(Cache& cache)
 {
     string jsonHead = "{\"" + m_queryWord + "\":[";
     string msg;
@@ -125,6 +126,7 @@ void MyTask::response()
     }
     msg = jsonHead + msg + "]}";
     printf("%s$$\n", msg.c_str());
+    cache.addElement(m_queryWord, msg);
     m_conn->sendInLoop(msg);
 }
 

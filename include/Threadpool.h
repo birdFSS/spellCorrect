@@ -22,6 +22,8 @@ public:
     void start();
     void addTask(Task && elem);
     void stop();
+    size_t getThreadNum() const
+    { return m_threadNum; }
 private:
     ElemType getTask();
     void threadFunc();

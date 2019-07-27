@@ -8,6 +8,23 @@ namespace wd
 class CacheManager
 {
 public:
+    static CacheManager* getInstance()
+    {
+        if(m_self == nullptr)
+        {
+            m_self = new CacheManager();
+            atexit(destroy);
+        }
+        return m_self;
+    }
+
+    static void destroy()
+    {
+        if(m_self)
+        {
+            delete m_self;
+        }
+    }
     static void initCache(size_t num, const std::string& fileName)
     {
         Cache cache;
@@ -47,6 +64,7 @@ public:
     ~CacheManager() {}
 
 private:
+    static CacheManager* m_self;
     static std::vector<Cache> m_cacheList;
     static std::string m_cacheFilePath;
 };
