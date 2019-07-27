@@ -31,7 +31,7 @@ public:
     void join();
     ~Thread();
 
-
+private:
     static void * threadFunc(void * arg);
 
 private:

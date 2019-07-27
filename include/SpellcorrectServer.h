@@ -1,5 +1,6 @@
 #pragma once
 #include "MyConf.h"
+#include "TimerThread.h"
 #include "TcpServer.h"
 #include "Threadpool.h"
 
@@ -13,6 +14,7 @@ public:
     SpellcorrectServer(MyConf &conf) :
         m_cacheId(0),
         m_conf(conf),
+        m_timer(nullptr),
         m_tcpServer(m_conf.getConfig()["ip"],stoi( m_conf.getConfig()["port"])),
         m_threadpool(stoi(m_conf.getConfig()["threadNum"]),stoi(m_conf.getConfig()["queueSize"]))
     {
@@ -27,6 +29,7 @@ public:
 private:
     int m_cacheId;      //轮询访问每个cache,从0到threadNum，再从0开始
     MyConf& m_conf;    
+    std::shared_ptr<TimerThread> m_timer;
     TcpServer m_tcpServer;
     Threadpool m_threadpool;
 };

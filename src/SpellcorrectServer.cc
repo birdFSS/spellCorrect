@@ -45,6 +45,12 @@ void SpellcorrectServer::start()
     auto pCacheMana = CacheManager::getInstance();
     pCacheMana->initCache(stoi(config.at("threadNum")), config.at("cacheFilePath"));
 
+    m_timer = std::make_shared<TimerThread>(
+        TimerThread(stoi(config.at("initTime")),stoi(config.at("intervalTime")),
+                    std::bind(&CacheManager::periodicUpdateCaches,pCacheMana))
+    );
+
+
     m_threadpool.start();
     using namespace std::placeholders;
     m_tcpServer.setConnectionCallBack(std::bind(&SpellcorrectServer::onConnection, this, _1));

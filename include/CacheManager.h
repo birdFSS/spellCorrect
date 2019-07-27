@@ -66,8 +66,8 @@ private:
 
 private:
     static CacheManager* m_self;
-    static std::vector<Cache> m_cacheList;
-    static std::string m_cacheFilePath;
+    std::vector<Cache> m_cacheList;
+    std::string m_cacheFilePath;
 };
 
 
