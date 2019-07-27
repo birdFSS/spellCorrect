@@ -6,6 +6,7 @@ spell correct
 
     a.今天主要任务是将Cache加入项目中。如果时间有余，就看看redis
     b.默认设置Cache个数和线程个数相同
+    c.将timerfd加入EventLoop
 
 
 

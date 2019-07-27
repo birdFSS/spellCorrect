@@ -1,4 +1,4 @@
-#include "Timer.h"
+#include "../include/Timer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -6,7 +6,7 @@
 
 namespace wd
 {
-Timer::Timer(int initSec, int intervalSec, TimeCallBack cb) :
+Timer::Timer(int initSec, int intervalSec, TimerCallBack cb) :
     m_timerfd(createTimerfd()),
     m_isStarted(false),
     m_cb(cb)

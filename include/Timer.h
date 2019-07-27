@@ -5,10 +5,10 @@
 namespace wd
 {
 
+using TimerCallBack = std::function<void()>;
 class Timer
 {
 public:
-    typedef std::function<void()> TimerCallBack;
     Timer(int initSec, int intervalSec, TimerCallBack cb);
     ~Timer();
     void start();

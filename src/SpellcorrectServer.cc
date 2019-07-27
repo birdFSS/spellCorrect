@@ -1,6 +1,8 @@
 #include "../include/SpellcorrectServer.h"
 #include "../include/CacheManager.h"
 #include "../include/MyTask.h"
+#include "../include/CacheManager.h"
+#include <string>
 #include <iostream>
 #include <string>
 #include <functional>
@@ -38,6 +40,11 @@ void SpellcorrectServer::start()
 {
     CacheManager* pCache = CacheManager::getInstance();
     pCache->initCache(stoi(m_conf.getConfig().at("threadNum")), m_conf.getConfig().at("cacheFilePath"));
+    auto& config = m_conf.getConfig();
+    
+    auto pCacheMana = CacheManager::getInstance();
+    pCacheMana->initCache(stoi(config.at("threadNum")), config.at("cacheFilePath"));
+
     m_threadpool.start();
     using namespace std::placeholders;
     m_tcpServer.setConnectionCallBack(std::bind(&SpellcorrectServer::onConnection, this, _1));

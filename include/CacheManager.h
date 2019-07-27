@@ -25,7 +25,8 @@ public:
             delete m_self;
         }
     }
-    static void initCache(size_t num, const std::string& fileName)
+
+    void initCache(size_t num, const std::string& fileName)
     {
         Cache cache;
         cache.readFromFile(fileName);
@@ -36,7 +37,7 @@ public:
         }
     }
 
-    static Cache& getCache(size_t idx)
+    Cache& getCache(size_t idx)
     {   
         if(idx < m_cacheList.size())
             return m_cacheList[idx]; 
@@ -45,7 +46,7 @@ public:
         }
     }
 
-    static void periodicUpdateCaches() //定时更新所有缓存
+    void periodicUpdateCaches() //定时更新所有缓存
     {
         for(size_t i=1;i<m_cacheList.size(); ++i)
         {
@@ -58,7 +59,7 @@ public:
         }
         m_cacheList[0].writeToFile(m_cacheFilePath);
     }
-
+private:
     CacheManager() {}
 
     ~CacheManager() {}
