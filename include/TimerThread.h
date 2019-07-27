@@ -9,8 +9,8 @@ class TimerThread
 {
 public:
     typedef std::function<void()> TimerCallBack;
-    TimerThread(int initSec, int intervalSec, TimerCallBack cb) :
-        m_timer(initSec, intervalSec, cb),
+    TimerThread(int initSec, int intervalSec, TimerCallBack &&cb) :
+        m_timer(initSec, intervalSec, std::move(cb)),
         m_thread(std::bind(&Timer::start, &m_timer))
     {}
     ~TimerThread() {}

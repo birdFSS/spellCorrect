@@ -9,7 +9,7 @@ using TimerCallBack = std::function<void()>;
 class Timer
 {
 public:
-    Timer(int initSec, int intervalSec, TimerCallBack cb);
+    Timer(int initSec, int intervalSec, TimerCallBack && cb);
     ~Timer();
     void start();
     void stop();

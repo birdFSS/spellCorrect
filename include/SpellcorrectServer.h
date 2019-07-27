@@ -1,6 +1,7 @@
 #pragma once
 #include "MyConf.h"
 #include "TimerThread.h"
+#include "CacheManager.h"
 #include "TcpServer.h"
 #include "Threadpool.h"
 
@@ -14,9 +15,19 @@ public:
     SpellcorrectServer(MyConf &conf) :
         m_cacheId(0),
         m_conf(conf),
-        m_timer(nullptr),
-        m_tcpServer(m_conf.getConfig()["ip"],stoi( m_conf.getConfig()["port"])),
-        m_threadpool(stoi(m_conf.getConfig()["threadNum"]),stoi(m_conf.getConfig()["queueSize"]))
+        m_timer(new TimerThread(
+                stoi(m_conf.getConfig().at("initTime")),
+                stoi(m_conf.getConfig().at("intervalTime")),
+                std::bind(&CacheManager::periodicUpdateCaches, CacheManager::getInstance())
+                )),
+        m_tcpServer(
+                m_conf.getConfig()["ip"],
+                stoi( m_conf.getConfig()["port"])
+                ),
+        m_threadpool(
+                stoi(m_conf.getConfig()["threadNum"]),
+                stoi(m_conf.getConfig()["queueSize"])
+                )
     {
     }
     ~SpellcorrectServer() {}

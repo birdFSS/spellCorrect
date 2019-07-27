@@ -1,6 +1,7 @@
 #pragma once
 #include "Cache.h"
 #include <vector>
+#include <iostream>
 
 namespace wd
 {
@@ -28,6 +29,8 @@ public:
 
     void initCache(size_t num, const std::string& fileName)
     {
+        std::cout << "num = " << num << std::endl
+             << "fileName = " << fileName << std::endl;
         Cache cache;
         cache.readFromFile(fileName);
         m_cacheFilePath = fileName;

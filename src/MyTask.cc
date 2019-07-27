@@ -31,9 +31,19 @@ void MyTask::showQueue()
 }
 
 void MyTask::excute(Cache& cache)
-{
-    queryIndexTable();
-    response(cache);
+{   
+    auto iter = cache.getHashMap().find(m_queryWord);
+    cout << "map size = " << cache.getHashMap().size() << endl;
+    if((iter  != cache.getHashMap().end()))
+    {
+        cout << "get Cache" << endl;
+        m_conn->sendInLoop(iter->second); 
+        cache.addElement(iter->first, iter->second);     //更新lru算法中位置
+    }else{
+        cout << "queryIndexTable ing..." << endl;
+        queryIndexTable();
+        response(cache);
+    }
 }
 
 void MyTask::queryIndexTable()
@@ -126,8 +136,8 @@ void MyTask::response(Cache& cache)
     }
     msg = jsonHead + msg + "]}";
     printf("%s$$\n", msg.c_str());
-    cache.addElement(m_queryWord, msg);
     m_conn->sendInLoop(msg);
+    cache.addElement(m_queryWord, msg);
 }
 
 
@@ -184,9 +194,9 @@ int MyTask::editDistance(const std::string & lhs, const std::string &rhs)
 	for(std::size_t dist_i = 1, lhs_idx = 0; dist_i <= lhs_len; ++dist_i, ++lhs_idx)
 	{
 		size_t nBytes = nBytesCode(lhs[lhs_idx]);
-        printf("pos=%ld$size=%ld$\n", lhs_idx,lhs.size());
+        //printf("pos=%ld$size=%ld$\n", lhs_idx,lhs.size());
 		sublhs = lhs.substr(lhs_idx, nBytes);
-        printf("pos=%ld$size=%ld$\n", lhs_idx,lhs.size());
+        //printf("pos=%ld$size=%ld$\n", lhs_idx,lhs.size());
 		lhs_idx += (nBytes - 1);
 
 		for(std::size_t dist_j = 1, rhs_idx = 0; dist_j <= rhs_len; ++dist_j, ++rhs_idx)

@@ -6,10 +6,10 @@
 
 namespace wd
 {
-Timer::Timer(int initSec, int intervalSec, TimerCallBack cb) :
+Timer::Timer(int initSec, int intervalSec, TimerCallBack&& cb) :
     m_timerfd(createTimerfd()),
     m_isStarted(false),
-    m_cb(cb)
+    m_cb(std::move(cb))
 {
     setTimer(initSec, intervalSec);    
 }

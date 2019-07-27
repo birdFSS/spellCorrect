@@ -6,7 +6,11 @@ namespace wd
 
 void Thread::create()
 {
-    pthread_create(&m_pthid, nullptr, threadFunc, this);
+    if(pthread_create(&m_pthid, nullptr, threadFunc, this) == -1)
+    {
+        perror("pthread_create");
+        exit(-1);
+    }
     m_isRunning = true;
 }
 
