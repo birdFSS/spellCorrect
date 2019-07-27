@@ -50,8 +50,10 @@ void SpellcorrectServer::start()
                     std::bind(&CacheManager::periodicUpdateCaches,pCacheMana))
     );
 
+    m_timer->start();
 
     m_threadpool.start();
+
     using namespace std::placeholders;
     m_tcpServer.setConnectionCallBack(std::bind(&SpellcorrectServer::onConnection, this, _1));
     m_tcpServer.setMessageCallBack(std::bind(&SpellcorrectServer::onMessage, this, _1));
