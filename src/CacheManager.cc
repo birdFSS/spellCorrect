@@ -40,6 +40,11 @@ void CacheManager::periodicUpdateCaches() //定时更新所有缓存
         m_cacheVec[i].update(m_cacheVec[0]);
     }
     m_cacheVec[0].writeToFile(m_cacheFilePath);
+
+#if 1
+    printf("write to file int Cache 0\n");
+    m_cacheVec[0].showList();
+#endif
 }
 
 
