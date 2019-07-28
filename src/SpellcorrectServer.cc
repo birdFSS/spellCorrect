@@ -47,9 +47,8 @@ void SpellcorrectServer::start()
     pCacheMana->initCache(stoi(config.at("threadNum")), config.at("cacheFilePath"));
 
     m_threadpool.start();
-
     TimerThread timerThread(stoi(config.at("initTime")), 
-                            stoi(config.at("intervalTimer")),
+                            stoi(config.at("intervalTime")),
                             std::bind(&CacheManager::periodicUpdateCaches, pCacheMana));
     timerThread.start();
 
