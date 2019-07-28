@@ -13,10 +13,12 @@ void CacheManager::initCache(size_t num, const std::string& fileName)
     Cache cache;
     cache.readFromFile(fileName);
     m_cacheFilePath = fileName;
+    //printf("size = %ld\n", m_cacheVec.size());
     while(num-- > 0)
     {
         m_cacheVec.push_back(cache);
     }
+    //printf("size = %ld\n", m_cacheVec.size());
 }
 
 Cache& CacheManager::getCache(size_t idx)

@@ -49,8 +49,7 @@ void Cache::addElement(const std::string& key, const std::string &value)
         {
             string oldKey = m_list.back().m_key;
             m_list.pop_back();
-            auto iter_oldKey = m_hashMap.find(oldKey);
-            m_hashMap.erase(iter_oldKey);
+            m_hashMap.erase(oldKey);
         }
 
     }
@@ -94,13 +93,18 @@ void Cache::update(const Cache& rhs)
 void Cache::getMostFrequentlyUsedData(std::vector<Cache>& Caches)   //将其他缓冲信息统一到一个list
 {
     size_t insertNum = CACHE_SIZE/ Caches.size();
+    //cout << "insertNum = " << insertNum << endl
+    //     << "CacheSize = " << CACHE_SIZE << endl
+    //     << "Caches.size() = " << Caches.size() << endl;
     size_t j = 0;
     //循环遍历，每个Caches插入insertNum个数据,直到为空
     for(size_t i=1;i!=Caches.size();++i)
     {
+        j = 0;
         for(auto iter = Caches[i].m_list.begin(); iter != Caches[i].m_list.end() && j != insertNum; ++iter,++j)
         {
             Caches[0].addElement(iter->m_key, iter->m_value);
+            //printf("Cache %ld insert (%s-->%s)\n", i, iter->m_key.c_str(), iter->m_value.c_str());
         }
     }
 }

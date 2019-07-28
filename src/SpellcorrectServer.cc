@@ -38,8 +38,6 @@ void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
 
 void SpellcorrectServer::start()
 {
-    CacheManager* pCache = CacheManager::getInstance();
-    pCache->initCache(stoi(m_conf.getConfig().at("threadNum")), m_conf.getConfig().at("cacheFilePath"));
     auto& config = m_conf.getConfig();
     
     //初始化缓存,可以考虑设置一个标记位，判断是否init过，避免一些情况
