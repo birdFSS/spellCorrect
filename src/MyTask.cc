@@ -35,14 +35,22 @@ void MyTask::excute()
 {   
     auto& cache = CacheManager::getInstance()->getCache(current_thread::CacheIndex);
     auto iter = cache.m_hashMap.find(m_queryWord);
-    cout << "map size = " << cache.m_hashMap.size() << endl;
+    //cout << "map size = " << cache.m_hashMap.size() << endl;
     if((iter  != cache.m_hashMap.end()))
     {
+
+#if MYTASK_DEBUG
         cout << "get Cache" << endl;
+#endif
+
         m_conn->sendInLoop(iter->second->m_value); 
         cache.addElement(iter->first, iter->second->m_value);     //更新lru算法中位置
     }else{
+
+#if MYTASK_DEBUG
         cout << "queryIndexTable ing..." << endl;
+#endif
+
         queryIndexTable();
         response(cache);
     }
@@ -137,7 +145,11 @@ void MyTask::response(Cache& cache)
         }
     }
     msg = jsonHead + msg + "]}";
-    printf("%s$$\n", msg.c_str());
+
+#if MYTASK_DEBUG
+    printf("MyTask::response send msg = %s$$\n", msg.c_str());
+#endif
+
     m_conn->sendInLoop(msg);
     cache.addElement(m_queryWord, msg);
 }

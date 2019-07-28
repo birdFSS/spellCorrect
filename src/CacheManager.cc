@@ -1,5 +1,4 @@
 #include "../include/CacheManager.h"
-#define CACHE_TEST 1
 
 
 namespace wd
@@ -13,12 +12,19 @@ void CacheManager::initCache(size_t num, const std::string& fileName)
     Cache cache;
     cache.readFromFile(fileName);
     m_cacheFilePath = fileName;
-    //printf("size = %ld\n", m_cacheVec.size());
+
+#if CACHE_DEBUG
+    printf("size = %ld\n", m_cacheVec.size());
+#endif
+
     while(num-- > 0)
     {
         m_cacheVec.push_back(cache);
     }
-    //printf("size = %ld\n", m_cacheVec.size());
+
+#if CACHE_DEBUG
+    printf("size = %ld\n", m_cacheVec.size());
+#endif
 }
 
 Cache& CacheManager::getCache(size_t idx)
@@ -40,7 +46,7 @@ void CacheManager::periodicUpdateCaches() //定时更新所有缓存
     }
     m_cacheVec[0].writeToFile(m_cacheFilePath);
 
-#if CACHE_TEST
+#if CACHE_DEBUG
     printf("write to file int Cache 0\n");
     m_cacheVec[0].showList();
 #endif

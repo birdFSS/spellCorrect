@@ -5,6 +5,9 @@
 #include <vector>
 #define CACHE_SIZE 10
 
+
+#define CACHE_DEBUG 0
+
 namespace wd
 {
 

@@ -89,7 +89,6 @@ void Cache::update(const Cache& rhs)
     }
 }
 
-#if 1
 void Cache::getMostFrequentlyUsedData(std::vector<Cache>& Caches)   //将其他缓冲信息统一到一个list
 {
     size_t insertNum = CACHE_SIZE/ Caches.size();
@@ -104,12 +103,13 @@ void Cache::getMostFrequentlyUsedData(std::vector<Cache>& Caches)   //将其他�
         for(auto iter = Caches[i].m_list.begin(); iter != Caches[i].m_list.end() && j != insertNum; ++iter,++j)
         {
             Caches[0].addElement(iter->m_key, iter->m_value);
-            //printf("Cache %ld insert (%s-->%s)\n", i, iter->m_key.c_str(), iter->m_value.c_str());
+#if CACHE_DEBUG
+            printf("Cache %ld insert (%s-->%s)\n", i, iter->m_key.c_str(), iter->m_value.c_str());
+#endif
         }
     }
 }
 
-#endif
 
 
 

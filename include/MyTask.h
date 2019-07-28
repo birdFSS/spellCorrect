@@ -6,6 +6,8 @@
 #include <queue>
 #define WORD_NUMBER 5
 
+#define MYTASK_DEBUG 1
+
 namespace wd
 {
 
