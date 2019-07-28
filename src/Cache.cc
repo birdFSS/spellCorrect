@@ -83,28 +83,26 @@ void Cache::update(const Cache& rhs)
 {
     //如果Cache没满，那么rhs中的缓存就加入了this 中了
     //如果满了，那么rhs中的缓存就代替this中缓存
-    for(auto it = rhs.m_list.begin(); it != rhs.m_list.end(); ++it)
+    //反向遍历，先传入链表尾的数据（较老的数据），再传入链表头数据（较新的数据）
+    for(auto it = rhs.m_list.rbegin(); it != rhs.m_list.rend(); ++it)
     {
         addElement(it->m_key, it->m_value);
     }
 }
 
-#if 0
+#if 1
 void Cache::getMostFrequentlyUsedData(std::vector<Cache>& Caches)   //将其他缓冲信息统一到一个list
 {
-    int num = CACHE_SIZE;
-    bool CacheEmpty[CACHE_SIZE] = {0};
-    for(int i=1;num != 0;++i)
+    size_t insertNum = CACHE_SIZE/ Caches.size();
+    size_t j = 0;
+    //循环遍历，每个Caches插入insertNum个数据,直到为空
+    for(size_t i=1;i!=Caches.size();++i)
     {
-        if(Caches[i].m_list.size() != 0)
+        for(auto iter = Caches[i].m_list.begin(); iter != Caches[i].m_list.end() && j != insertNum; ++iter,++j)
         {
-            
-            --num;
-        }else{
-            CacheEmpty[i] = true;
+            Caches[0].addElement(iter->m_key, iter->m_value);
         }
     }
-
 }
 
 #endif

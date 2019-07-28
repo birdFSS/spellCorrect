@@ -1,4 +1,5 @@
 #include "../include/CacheManager.h"
+#define CACHE_TEST 1
 
 
 namespace wd
@@ -29,11 +30,7 @@ Cache& CacheManager::getCache(size_t idx)
 
 void CacheManager::periodicUpdateCaches() //定时更新所有缓存
 {
-    for(size_t i=1;i<m_cacheVec.size(); ++i)
-    {
-        m_cacheVec[0].update(m_cacheVec[i]);
-    }
-
+    Cache::getMostFrequentlyUsedData(m_cacheVec);
 
     for(size_t i=1;i<m_cacheVec.size(); ++i)
     {
@@ -41,7 +38,7 @@ void CacheManager::periodicUpdateCaches() //定时更新所有缓存
     }
     m_cacheVec[0].writeToFile(m_cacheFilePath);
 
-#if 1
+#if CACHE_TEST
     printf("write to file int Cache 0\n");
     m_cacheVec[0].showList();
 #endif
