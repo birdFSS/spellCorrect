@@ -1,6 +1,7 @@
 #pragma once
 #include "Timer.h"
 #include "Thread.h"
+#include "CacheManager.h"
 
 namespace wd
 {
@@ -24,11 +25,6 @@ public:
         m_thread.join();
     }
 
-    void runTimeFunc()
-    {
-        m_timer.handleRead();
-        m_timer.runCallBack();
-    }
 
     int getFd() const
     { return m_timer.getFd(); }

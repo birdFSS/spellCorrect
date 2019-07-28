@@ -15,7 +15,6 @@ public:
     TcpServer(const string& ip, unsigned short port);
     void start();
 
-    void setTimer(std::shared_ptr<TimerThread>& pTimerThread);
     void setConnectionCallBack(TcpConnectionCallBack && cb);
     void setMessageCallBack(TcpConnectionCallBack && cb);
     void setCloseCallBack(TcpConnectionCallBack && cb);

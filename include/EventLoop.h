@@ -10,7 +10,6 @@ namespace wd
 {
 class Acceptor;
 class TcpConnection;
-class TimerThread;
 
 class EventLoop
 {
@@ -18,11 +17,10 @@ public:
     using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
     using TcpConnectionCallBack = std::function<void(const TcpConnectionPtr&)>;
     using Functor = std::function<void()>;
-    EventLoop(Acceptor &, std::shared_ptr<TimerThread> pTimerThread = nullptr);
+    EventLoop(Acceptor &);
     void loop();
     void unloop();
     void runInLoop(Functor && cb);
-    void setTimer(std::shared_ptr<TimerThread> pTimerThread);
 
     void setConnectionCallBack(TcpConnectionCallBack && cb)
     { m_onConnection = std::move(cb); }
@@ -50,7 +48,6 @@ private:
     int m_efd;
     int m_eventfd;
     Acceptor & m_acceptor;
-    std::shared_ptr<TimerThread> m_pTimerThread;
     std::vector<struct epoll_event> m_eventList;
     std::map<int, TcpConnectionPtr> m_conns;
     bool m_isLooping;

@@ -34,13 +34,13 @@ void MyTask::showQueue()
 void MyTask::excute()
 {   
     auto& cache = CacheManager::getInstance()->getCache(current_thread::CacheIndex);
-    auto iter = cache.getHashMap().find(m_queryWord);
-    cout << "map size = " << cache.getHashMap().size() << endl;
-    if((iter  != cache.getHashMap().end()))
+    auto iter = cache.m_hashMap.find(m_queryWord);
+    cout << "map size = " << cache.m_hashMap.size() << endl;
+    if((iter  != cache.m_hashMap.end()))
     {
         cout << "get Cache" << endl;
-        m_conn->sendInLoop(iter->second); 
-        cache.addElement(iter->first, iter->second);     //更新lru算法中位置
+        m_conn->sendInLoop(iter->second->m_value); 
+        cache.addElement(iter->first, iter->second->m_value);     //更新lru算法中位置
     }else{
         cout << "queryIndexTable ing..." << endl;
         queryIndexTable();

@@ -16,7 +16,7 @@ struct ThreadData
 
     ThreadData(const int & num, ThreadCallBack && cb) :
         m_CacheIndex(num),
-        m_cb(std::move(cb))
+        m_cb(cb)
     {}
 
     int m_CacheIndex;
@@ -34,7 +34,7 @@ struct ThreadData
 
 void Thread::create()
 {
-    ThreadData* pThreadData = new ThreadData(m_CacheIndex, std::move(m_call));
+    ThreadData* pThreadData = new ThreadData(m_CacheIndex,std::move(m_call));
 
     if(pthread_create(&m_pthid, nullptr, threadFunc, pThreadData) == -1)
     {

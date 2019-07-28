@@ -29,17 +29,15 @@ Cache& CacheManager::getCache(size_t idx)
 
 void CacheManager::periodicUpdateCaches() //定时更新所有缓存
 {
-    //这里设计为循环读取不同缓冲区的最热数据
-    m_cacheVec[0].showList();
-    m_cacheVec[1].showList();
-
-    Cache::getMostFrequentlyUsedData(m_cacheVec);
-
-    m_cacheVec[0].showList();
-    m_cacheVec[1].showList();
     for(size_t i=1;i<m_cacheVec.size(); ++i)
     {
-        m_cacheVec[i].update(m_cacheVec[i]);
+        m_cacheVec[0].update(m_cacheVec[i]);
+    }
+
+
+    for(size_t i=1;i<m_cacheVec.size(); ++i)
+    {
+        m_cacheVec[i].update(m_cacheVec[0]);
     }
     m_cacheVec[0].writeToFile(m_cacheFilePath);
 }

@@ -1,12 +1,12 @@
 #include "../include/EventLoop.h"
 #include "../include/Acceptor.h"
 #include "../include/TcpConnection.h"
-#include "../include/TimerThread.h"
 #include <unistd.h>
 #include <assert.h>
 #include <string.h>
 #include <sys/eventfd.h>
 #include <iostream>
+
 
 using std::cout;
 using std::endl;
@@ -14,41 +14,18 @@ using std::endl;
 namespace wd
 {
 
-EventLoop::EventLoop(Acceptor & accp, std::shared_ptr<TimerThread> pTimerThread) :
+EventLoop::EventLoop(Acceptor & accp) :
     m_efd(createEpollFd()),
     m_eventfd(createEventFd()),
     m_acceptor(accp),
-    m_pTimerThread(pTimerThread),
     m_eventList(1024),
     m_isLooping(false)
 {
     addEpollFdRead(m_acceptor.getFd());
     addEpollFdRead(m_eventfd);
-    if(m_pTimerThread != nullptr)
-    {
-        cout << "m_pTimerThread fd = " << m_pTimerThread->getFd() << endl;
-        addEpollFdRead(m_pTimerThread->getFd());
-    }
     //printf("listen fd = %d\neventfd = %d\n", m_acceptor.getFd(), m_eventfd);
 }
-    
 
-void EventLoop::setTimer(std::shared_ptr<TimerThread> pTimerThread)
-{
-    if(nullptr == pTimerThread)
-    {
-        return ;
-    }
-    //添加多个定时器问题,先删除前面那个，再添加
-    if(m_pTimerThread != nullptr)
-    {
-        delEpollFdRead(m_pTimerThread->getFd());
-        m_pTimerThread->stop();
-    }
-
-    m_pTimerThread = pTimerThread;
-    addEpollFdRead(m_pTimerThread->getFd());
-}
 
 void EventLoop::handleRead()
 {
@@ -155,6 +132,7 @@ void EventLoop::waitEpollFd()
         for(int idx = 0; idx != readyNum; ++idx)
         {
             int fd = m_eventList[idx].data.fd;
+
             if(fd == m_acceptor.getFd()) 
             {
                 if(m_eventList[idx].events & EPOLLIN)   //处理新链接
@@ -169,10 +147,6 @@ void EventLoop::waitEpollFd()
                     doPendingFunctors();
                     cout << ">> after doPendingFunctors()" << endl;
                 }
-            }else if(fd == m_pTimerThread->getFd()){
-                cout << ">> timer function" << endl;
-                m_pTimerThread->runTimeFunc();
-
             }else{
                 if(m_eventList[idx].events & EPOLLIN) //处理消息
                 {

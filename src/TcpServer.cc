@@ -32,8 +32,6 @@ void TcpServer::setCloseCallBack(TcpConnectionCallBack && cb)
 }
 
 
-void TcpServer::setTimer(std::shared_ptr<TimerThread>& pTimerThread)
-{ m_loop.setTimer(pTimerThread); }
 
 
 

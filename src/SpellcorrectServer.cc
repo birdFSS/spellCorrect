@@ -1,7 +1,7 @@
 #include "../include/SpellcorrectServer.h"
 #include "../include/CacheManager.h"
+#include "../include/TimerThread.h"
 #include "../include/MyTask.h"
-#include "../include/CacheManager.h"
 #include <string>
 #include <iostream>
 #include <string>
@@ -35,6 +35,7 @@ void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
         );
 }
 
+
 void SpellcorrectServer::start()
 {
     CacheManager* pCache = CacheManager::getInstance();
@@ -47,13 +48,16 @@ void SpellcorrectServer::start()
 
     m_threadpool.start();
 
+    TimerThread timerThread(stoi(config.at("initTime")), 
+                            stoi(config.at("intervalTimer")),
+                            std::bind(&CacheManager::periodicUpdateCaches, pCacheMana));
+    timerThread.start();
+
     using namespace std::placeholders;
     m_tcpServer.setConnectionCallBack(std::bind(&SpellcorrectServer::onConnection, this, _1));
     m_tcpServer.setMessageCallBack(std::bind(&SpellcorrectServer::onMessage, this, _1));
     m_tcpServer.setCloseCallBack(std::bind(&SpellcorrectServer::onClose, this, _1));
-
-    m_tcpServer.setTimer(m_timer);
-    m_timer->start();
+    
 
     m_tcpServer.start();
 

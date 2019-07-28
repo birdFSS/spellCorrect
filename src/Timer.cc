@@ -1,4 +1,5 @@
 #include "../include/Timer.h"
+#include <poll.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -10,9 +11,9 @@ Timer::Timer(int initSec, int intervalSec, TimerCallBack&& cb) :
     m_timerfd(createTimerfd()),
     m_isStarted(false),
     m_cb(std::move(cb))
-{
-    setTimer(initSec, intervalSec);    
-}
+    {
+        setTimer(initSec, intervalSec);    
+    }
 
 Timer::~Timer()
 {
@@ -22,11 +23,29 @@ Timer::~Timer()
 void Timer::start()
 {
     m_isStarted = true;
-    int ret = timerfd_settime(m_timerfd, 0, &m_ts, nullptr);
-    if(-1 == ret)
-    {
-        perror("timerfd_settime");
+
+    struct pollfd pfd;
+    pfd.fd = m_timerfd;
+    pfd.events = POLLIN;
+
+    while(m_isStarted) {
+        int nready = ::poll(&pfd, 1, 5000); 
+        if(nready == -1 && errno == EINTR)
+            continue;
+        else if(nready == -1)
+            return;
+        else if(nready == 0)
+            printf(">> poll timeout!!\n");
+        else {
+            if(pfd.revents & POLLIN) {
+                handleRead();
+                if(m_cb)
+                    m_cb();
+
+            }
+        }
     }
+
 }
 
 void Timer::stop()
@@ -66,6 +85,12 @@ void Timer::setTimer(int initSec, int intervalSec)
     m_ts.it_value.tv_nsec = 0;
     m_ts.it_interval.tv_sec = intervalSec;
     m_ts.it_interval.tv_nsec = 0;
+
+    int ret = timerfd_settime(m_timerfd, 0, &m_ts, nullptr);
+    if(-1 == ret)
+    {
+        perror("timerfd_settime");
+    }
 }
 
 
