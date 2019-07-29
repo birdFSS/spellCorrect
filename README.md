@@ -9,6 +9,7 @@ spell correct
     b.添加封装了log4cpp的Mylog.h 和 Mylog.cc, 使用前需要先安装log4cpp
     c.此外，也需要安装json
     d.不小心加入core，大小大于100MB导致出错，一直上传不了。
+    e.搞好了。。。
 
 
 8、2019/7/28
