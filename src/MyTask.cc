@@ -63,7 +63,7 @@ void MyTask::queryIndexTable()
 
     int len = length(m_queryWord);
     int pos = 0;
-    int step = nBytesCode(m_queryWord[0]);
+    int step;  
     auto iter = m_indexTable.begin();
 
     int array[10000] = {0};
@@ -71,7 +71,8 @@ void MyTask::queryIndexTable()
     for(int i=0; i< len; i++)
     {
         //printf("pos=%d$\n", pos);
-        string oneWord(m_queryWord, pos, step); //这里有问题
+        step = nBytesCode(m_queryWord[pos]);    //这个放在里面
+        string oneWord(m_queryWord, pos, step); 
         //cout << oneWord << endl;
         if((iter = m_indexTable.find(oneWord)) != m_indexTable.end())
         {
