@@ -1,4 +1,5 @@
 #include "../include/MyDict.h"
+#include "../include/Mylog.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -75,7 +76,7 @@ void MyDict::showTableInTestFile(const std::string& path)
         }
         ofs << endl;
     }
-    cout << " 索引表输出完毕,输出文件名为" << path << endl;
+    logInfo("索引表输出完毕，输出文件名为:%s\n", path);
 }
 
 void MyDict::showDictInTestFile(const std::string& path)
@@ -86,7 +87,7 @@ void MyDict::showDictInTestFile(const std::string& path)
     {
         ofs << i.first << " " << i.second << endl;
     }
-    cout << " 词典输出完毕,输出文件名为" << path << endl;
+    logInfo("词典输出完毕，输出文件名为:%s\n", path);
 }
 
 

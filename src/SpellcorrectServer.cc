@@ -2,6 +2,7 @@
 #include "../include/CacheManager.h"
 #include "../include/TimerThread.h"
 #include "../include/MyTask.h"
+#include "../include/Mylog.h"
 #include <string>
 #include <iostream>
 #include <string>
@@ -14,20 +15,20 @@ namespace wd
 
 void SpellcorrectServer::onConnection(const wd::TcpConnectionPtr & conn)
 {
-    cout << conn->toString() << " has connected!" << endl;
+    logInfo("%s has connected!", conn->toString().c_str());
 }
 
 void SpellcorrectServer::onClose(const wd::TcpConnectionPtr & conn)
 {
-    cout << ">> " << conn->toString() << " has closed!" << endl;
+    logInfo(">> %s has closed!", conn->toString().c_str());
 }
 
 void SpellcorrectServer::onMessage(const wd::TcpConnectionPtr & conn)
 {
     //该回调函数实际不宜过长 2ms
-    cout << "onMessage..." << endl;
+    //cout << "onMessage..." << endl;
     string msg = conn->receive();       
-    cout << ">> receive msg from client : " << msg << endl;
+    logInfo(">> receive msg from client : %s", msg.c_str());
     
     wd::MyTask task(msg,conn->getPeerFd(),conn);
     m_threadpool.addTask(
