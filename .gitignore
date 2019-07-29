@@ -8,3 +8,5 @@
 *.tar.gz
 *.rar
 libs/
+core
+log/
