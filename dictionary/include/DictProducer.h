@@ -32,7 +32,7 @@ public:
     void showFilePath() const; //测试接口
     void showDict() const; //测试接口
     void showIgnoreWords() const;
-    void getFileAbosolutePath() ;  //获取文件的绝对路径
+    void getFileAbosolutePath(const std::string& dirName) ;  //获取文件的绝对路径
     void pushDict(const string& word);  //存储某个单词
     
 

@@ -14,7 +14,7 @@ using std::vector;
 using std::string;
 
 
-const char * const ConfigFile = "../conf/config.utf8";
+const char * const ConfigFile = "../conf/myconf.conf";
 
 void test0()
 {
@@ -102,6 +102,12 @@ void test5()
     wd::DictProducer CNdict(confMap["cn_dir"], pst);
     CNdict.setIgnoreWords(confMap["cn_ignore"]);
     CNdict.buildCNDict();
+    
+    dict.storeDict(confMap.at("en_dict"));
+    CNdict.storeDict(confMap.at("cn_dict"));
+    //dict.showFilePath();
+    //CNdict.showFilePath();
+
 
     //测试构建索引
     std::ofstream ofs("../data/index.utf8");

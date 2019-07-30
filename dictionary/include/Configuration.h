@@ -20,17 +20,15 @@ public:
     }
     ~Configuration() {}
     std::map<std::string, std::string> &
-    getConfigMap();
+    getConfigMap()
+    {
+        return m_configMap;
+    }
 private:
     std::string m_fileName;
     std::map<std::string, std::string> m_configMap;
 };
 
-std::map<std::string, std::string> &
-Configuration::getConfigMap()
-{
-    return m_configMap;
-}
 
 
 

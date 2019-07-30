@@ -24,8 +24,9 @@ DictProducer::DictProducer(const string& dir) :
     m_splitTool(nullptr)
 {
     getDirAbosolutePath();
+    cout << m_dir << endl;
     //遍历目录，将文件的绝对路径都加进来
-    getFileAbosolutePath();
+    getFileAbosolutePath(m_dir);
     //cout << m_dir << endl;//测试
 }
 
@@ -34,7 +35,8 @@ DictProducer::DictProducer(const string& dir, std::shared_ptr<SplitTool> splitTo
     m_splitTool(splitTool)
 {
     getDirAbosolutePath();
-    getFileAbosolutePath();
+    cout << m_dir << endl;
+    getFileAbosolutePath(m_dir);
 }
 
 
@@ -161,9 +163,9 @@ void DictProducer::getDirAbosolutePath()
     }
 }
 
-void DictProducer::getFileAbosolutePath()   //获取文件的绝对路径
+void DictProducer::getFileAbosolutePath(const std::string& dirname)   //获取文件的绝对路径
 {
-    DIR* dir = opendir(m_dir.c_str());
+    DIR* dir = opendir(dirname.c_str());
     if(nullptr == dir)
     {
         perror("opendir");
@@ -175,8 +177,13 @@ void DictProducer::getFileAbosolutePath()   //获取文件的绝对路径
     {
         if(d->d_type & DT_REG)
         {
-            filePath = m_dir + "/" + d->d_name;
+            filePath = dirname + "/" + d->d_name;
             m_filePath.push_back(filePath);
+        }else if(d->d_type & DT_DIR){
+            if(d->d_name != string(".") && d->d_name != string(".."))
+            {
+                getFileAbosolutePath(dirname + "/" + d->d_name);
+            }
         }
     }
 
