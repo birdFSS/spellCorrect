@@ -15,6 +15,7 @@ namespace wd
 class Cache
 {
     friend class MyTask;
+    friend class CacheManager;
     struct CacheNode
     {
         CacheNode(const std::string& key,const std::string value) :
@@ -32,7 +33,8 @@ public:
     void readFromFile(const std::string& fileName);
     void writeToFile(const std::string& fileName);
     void update(const Cache& rhs);
-    static void getMostFrequentlyUsedData(std::vector<Cache>& Caches, size_t id);   //将其他缓冲信息统一到一个list
+    size_t getListSize() { return m_list.size(); }
+    
 
     void showList() const       //test
     {

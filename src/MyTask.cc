@@ -44,7 +44,11 @@ void MyTask::excute()
 #endif
 
         m_conn->sendInLoop(iter->second->m_value); 
-        cache.addElement(iter->first, iter->second->m_value);     //更新lru算法中位置
+        auto& mutexVec = CacheManager::getInstance()->getMutexs();
+        {
+            MutexLockGuard autolock(*mutexVec[current_thread::CacheIndex]);
+            cache.addElement(iter->first, iter->second->m_value);     //更新lru算法中位置
+        }
     }else{
 
 #if MYTASK_DEBUG
@@ -152,7 +156,12 @@ void MyTask::response(Cache& cache)
 #endif
 
     m_conn->sendInLoop(msg);
-    cache.addElement(m_queryWord, msg);
+    auto & mutexVec = CacheManager::getInstance()->getMutexs();
+
+    {
+        MutexLockGuard autolock(*mutexVec[current_thread::CacheIndex]);
+        cache.addElement(m_queryWord, msg);
+    }
 }
 
 

@@ -1,4 +1,6 @@
 #include "../include/Cache.h"
+#include "../include/CacheManager.h"
+#include "../include/Mylog.h"
 #include <fstream>
 #include <iostream>
 using std::cout;
@@ -72,7 +74,7 @@ void Cache::writeToFile(const std::string& fileName)
     ofstream ofs(fileName);
     for(auto it = m_list.rbegin(); it != m_list.rend(); ++it)
     {
-        ofs << it->m_key << " " << it->m_value << endl;
+        ofs << it->m_key << "\t" << it->m_value << endl;
     }
 }
 
@@ -85,34 +87,11 @@ void Cache::update(const Cache& rhs)
     //反向遍历，先传入链表尾的数据（较老的数据），再传入链表头数据（较新的数据）
     for(auto it = rhs.m_list.rbegin(); it != rhs.m_list.rend(); ++it)
     {
+        //logInfo("%s-->%s", it->m_key.c_str(), it->m_key.c_str());
         addElement(it->m_key, it->m_value);
     }
 }
 
-void Cache::getMostFrequentlyUsedData(std::vector<Cache>& Caches, size_t id)   //将其他缓冲信息统一到一个list
-{
-    size_t insertNum = CACHE_SIZE/ Caches.size();
-    //cout << "insertNum = " << insertNum << endl
-    //     << "CacheSize = " << CACHE_SIZE << endl
-    //     << "Caches.size() = " << Caches.size() << endl;
-    size_t j = 0;
-    //循环遍历，每个Caches插入insertNum个数据,直到为空
-    for(size_t i=0;i!=Caches.size();++i)
-    {
-        if(i == id)
-        {
-            continue;
-        }
-        j = 0;
-        for(auto iter = Caches[i].m_list.begin(); iter != Caches[i].m_list.end() && j != insertNum; ++iter,++j)
-        {
-            Caches[id].addElement(iter->m_key, iter->m_value);
-#if CACHE_DEBUG
-            printf("Cache %ld insert (%s-->%s)\n", i, iter->m_key.c_str(), iter->m_value.c_str());
-#endif
-        }
-    }
-}
 
 
 

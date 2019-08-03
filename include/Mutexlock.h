@@ -29,6 +29,7 @@ public:
     MutexLock(const MutexLock&) = delete;
     MutexLock& operator=(const MutexLock&) = delete;
 
+
     void lock()
     {
         if(pthread_mutex_lock(&m_nMutex))

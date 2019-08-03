@@ -1,6 +1,8 @@
 #pragma once
 #include "Cache.h"
+#include "Mutexlock.h"
 #include <vector>
+#include <memory>
 #include <iostream>
 
 namespace wd
@@ -31,7 +33,11 @@ public:
 
     Cache& getCache(size_t idx);
 
+    std::vector<std::shared_ptr<MutexLock>>& getMutexs() { return m_mutexs; }
+
     void periodicUpdateCaches(); //定时更新所有缓存
+
+    void getMostFrequentlyUsedData();   //将其他缓冲信息统一到一个list
 private:
     CacheManager() {}
 
@@ -39,6 +45,7 @@ private:
 
 private:
     static CacheManager* m_self;
+    std::vector<std::shared_ptr<MutexLock>>   m_mutexs;
     std::vector<Cache> m_cacheVec;
     std::string m_cacheFilePath;
 };
