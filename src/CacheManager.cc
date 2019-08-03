@@ -1,4 +1,5 @@
 #include "../include/CacheManager.h"
+#include "../include/Thread.h"
 
 
 namespace wd
@@ -38,17 +39,22 @@ Cache& CacheManager::getCache(size_t idx)
 
 void CacheManager::periodicUpdateCaches() //定时更新所有缓存
 {
-    Cache::getMostFrequentlyUsedData(m_cacheVec);
+    size_t cId = current_thread::CacheIndex;
+    Cache::getMostFrequentlyUsedData(m_cacheVec, cId);
 
-    for(size_t i=1;i<m_cacheVec.size(); ++i)
+    for(size_t i=0;i<m_cacheVec.size(); ++i)
     {
-        m_cacheVec[i].update(m_cacheVec[0]);
+        if(i == cId)
+        {
+            continue;
+        }
+        m_cacheVec[i].update(m_cacheVec[cId]);
     }
-    m_cacheVec[0].writeToFile(m_cacheFilePath);
+    m_cacheVec[cId].writeToFile(m_cacheFilePath);
 
 #if CACHE_DEBUG
     printf("write to file int Cache 0\n");
-    m_cacheVec[0].showList();
+    m_cacheVec[cId].showList();
 #endif
 }
 

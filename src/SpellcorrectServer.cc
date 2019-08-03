@@ -43,12 +43,13 @@ void SpellcorrectServer::start()
     
     //初始化缓存,可以考虑设置一个标记位，判断是否init过，避免一些情况
     auto pCacheMana = CacheManager::getInstance();
-    pCacheMana->initCache(stoi(config.at("threadNum")), config.at("cacheFilePath"));
+    //+1 对应定时器线程
+    pCacheMana->initCache(stoi(config.at("threadNum")) + 1, config.at("cacheFilePath"));
 
     m_threadpool.start();
     TimerThread timerThread(stoi(config.at("initTime")), 
                             stoi(config.at("intervalTime")),
-                            std::bind(&CacheManager::periodicUpdateCaches, pCacheMana));
+                            std::bind(&CacheManager::periodicUpdateCaches, pCacheMana), 0);
     timerThread.start();
 
     using namespace std::placeholders;

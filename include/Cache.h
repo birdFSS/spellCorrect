@@ -3,7 +3,7 @@
 #include <list>
 #include <iostream>
 #include <vector>
-#define CACHE_SIZE 10
+#define CACHE_SIZE 11
 
 
 #define CACHE_DEBUG 0
@@ -32,7 +32,7 @@ public:
     void readFromFile(const std::string& fileName);
     void writeToFile(const std::string& fileName);
     void update(const Cache& rhs);
-    static void getMostFrequentlyUsedData(std::vector<Cache>& Caches);   //将其他缓冲信息统一到一个list
+    static void getMostFrequentlyUsedData(std::vector<Cache>& Caches, size_t id);   //将其他缓冲信息统一到一个list
 
     void showList() const       //test
     {

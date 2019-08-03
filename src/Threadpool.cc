@@ -30,7 +30,8 @@ Threadpool::~Threadpool()
 
 void Threadpool::start()
 {
-    for(size_t idx = 0; idx != m_threadNum; ++idx)
+    //0 用于定时器线程更新
+    for(size_t idx = 1; idx != m_threadNum; ++idx)
     {
         unique_ptr<Thread> pthread(new Thread(
             std::bind(&Threadpool::threadFunc, this), idx
