@@ -63,9 +63,6 @@ void CacheManager::getMostFrequentlyUsedData()   //将其他缓冲信息统一�
 {
     size_t id = current_thread::CacheIndex;
     size_t insertNum = CACHE_SIZE/ m_cacheVec.size();
-    //cout << "insertNum = " << insertNum << endl
-    //     << "CacheSize = " << CACHE_SIZE << endl
-    //     << "Caches.size() = " << Caches.size() << endl;
     size_t j = 0;
     //循环遍历，每个Caches插入insertNum个数据,直到为空
     for(size_t i=0;i!=m_cacheVec.size();++i)

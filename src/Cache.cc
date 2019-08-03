@@ -33,16 +33,19 @@ Cache::~Cache()
 //LRU算法, 传入的值是引用，但是我在里面有删掉了，所以导致bug
 void Cache::addElement(const std::string& key, const std::string &value)
 {
-    logInfo("%s-->%s", key.c_str(), value.c_str());
     //查找关键字是否在hash表中
     auto iter = m_hashMap.find(key);
 
     //在hash表中，将其从链表中取出来，再插入链表头,更新哈希表
     if(iter != m_hashMap.end())
     {
+#if 0
         m_list.erase(iter->second);
         m_list.push_front(CacheNode(key,value));
         //iter->second = m_list.begin();    //iter->second 失效了,让给失效的iter赋值
+        m_hashMap[key] = m_list.begin();
+#endif 
+        m_list.splice(m_list.begin(), m_list, iter->second);
         m_hashMap[key] = m_list.begin();
     }else{
         //不再hash表中，新建一个节点，将节点放在链表头，如果Cache满了，
