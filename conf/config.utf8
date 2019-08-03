@@ -6,7 +6,7 @@ port  8888
 threadNum 10
 queueSize   20
 cacheFilePath ../data/Cache/Cache.utf8
-initTime 1
-intervalTime 10
+initTime 20
+intervalTime 30
 
 

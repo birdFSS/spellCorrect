@@ -47,7 +47,10 @@ void MyTask::excute()
         auto& mutexVec = CacheManager::getInstance()->getMutexs();
         {
             MutexLockGuard autolock(*mutexVec[current_thread::CacheIndex]);
-            cache.addElement(iter->first, iter->second->m_value);     //更新lru算法中位置
+            //cache.addElement(iter->first, iter->second->m_value);     //不能直接传，因为里面是引用，回导致list先释放该值
+            string key = iter->first;
+            string value = iter->second->m_value;
+            cache.addElement(key, value);
         }
     }else{
 
