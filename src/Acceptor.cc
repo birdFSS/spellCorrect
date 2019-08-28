@@ -56,7 +56,6 @@ int Acceptor::accept()
     return peerFd;
 }
 
-//这个不太懂，学习一下
 void Acceptor::setReuseAddr(bool on)
 {
     int one = on;

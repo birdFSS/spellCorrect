@@ -221,9 +221,7 @@ int MyTask::editDistance(const std::string & lhs, const std::string &rhs)
 	for(std::size_t dist_i = 1, lhs_idx = 0; dist_i <= lhs_len; ++dist_i, ++lhs_idx)
 	{
 		size_t nBytes = nBytesCode(lhs[lhs_idx]);
-        //printf("pos=%ld$size=%ld$\n", lhs_idx,lhs.size());
 		sublhs = lhs.substr(lhs_idx, nBytes);
-        //printf("pos=%ld$size=%ld$\n", lhs_idx,lhs.size());
 		lhs_idx += (nBytes - 1);
 
 		for(std::size_t dist_j = 1, rhs_idx = 0; dist_j <= rhs_len; ++dist_j, ++rhs_idx)
